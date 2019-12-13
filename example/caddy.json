@@ -22,13 +22,12 @@
           "listen": ["localhost:2020"],
           "routes": [
             {
-              "match": [{ "path": ["/webui"] }],
+              "match": [{ "path": ["/caddy2-api"] }],
               "handle": [
+                { "handler": "rewrite", "strip_path_prefix": "/caddy2-api" },
                 {
                   "handler": "reverse_proxy",
-                  "transport": { "protocol": "http" },
-                  "headers": {},
-                  "upstreams": [{ "dial": "127.0.0.1:3000" }]
+                  "upstreams": [{ "dial": "localhost:2019" }]
                 }
               ],
               "terminal": true
@@ -37,9 +36,7 @@
               "handle": [
                 {
                   "handler": "reverse_proxy",
-                  "transport": { "protocol": "http" },
-                  "headers": {},
-                  "upstreams": [{ "dial": "localhost:2019" }]
+                  "upstreams": [{ "dial": "127.0.0.1:3000" }]
                 }
               ],
               "terminal": true
