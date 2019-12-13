@@ -1,16 +1,10 @@
 import React from 'react';
 import clsx from 'clsx';
-import PropTypes from 'prop-types';
 import { makeStyles, useTheme } from '@material-ui/core';
-import { Divider, Drawer } from '@material-ui/core';
+import { Drawer } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import PeopleIcon from '@material-ui/icons/People';
-import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
-import TextFieldsIcon from '@material-ui/icons/TextFields';
-import ImageIcon from '@material-ui/icons/Image';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import SettingsIcon from '@material-ui/icons/Settings';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
+import LockIcon from '@material-ui/icons/Lock';
 
 import { SidebarNav } from './components';
 
@@ -44,46 +38,28 @@ export interface Page {
   icon: JSX.Element
 }
 
-const Sidebar = props => {
+export interface Props {
+  className?: string
+  onClose: any
+  open: boolean
+  variant: 'permanent' | 'persistent' | 'temporary'
+}
+
+const Sidebar: React.StatelessComponent<Props> = props => {
   const { open, variant, onClose, className, ...rest } = props;
 
   const classes = useStyles(useTheme());
 
   const pages: Page[] = [
     {
-      title: 'Dashboard',
-      href: '/dashboard',
+      title: 'Sites',
+      href: '/sites',
       icon: <DashboardIcon />
     },
     {
-      title: 'Users',
-      href: '/users',
-      icon: <PeopleIcon />
-    },
-    {
-      title: 'Products',
-      href: '/products',
-      icon: <ShoppingBasketIcon />
-    },
-    {
-      title: 'Authentication',
-      href: '/sign-in',
-      icon: <LockOpenIcon />
-    },
-    {
-      title: 'Typography',
-      href: '/typography',
-      icon: <TextFieldsIcon />
-    },
-    {
-      title: 'Icons',
-      href: '/icons',
-      icon: <ImageIcon />
-    },
-    {
-      title: 'Account',
-      href: '/account',
-      icon: <AccountBoxIcon />
+      title: 'TLS',
+      href: '/tls',
+      icon: <LockIcon />
     },
     {
       title: 'Settings',
@@ -111,13 +87,6 @@ const Sidebar = props => {
       </div>
     </Drawer>
   );
-};
-
-Sidebar.propTypes = {
-  className: PropTypes.string,
-  onClose: PropTypes.func,
-  open: PropTypes.bool.isRequired,
-  variant: PropTypes.string.isRequired
 };
 
 export default Sidebar;
