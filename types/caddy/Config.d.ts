@@ -2,6 +2,8 @@ import { AdminConfig } from "./AdminConfig";
 import { Logging } from "./Logging";
 import { Server } from "./Server";
 import { time } from "./go";
+import *as tls from "./TLS";
+
 
 /**
  * Config is the top (or beginning) of the Caddy configuration structure.
@@ -57,7 +59,12 @@ export interface Config {
 			/**Server configurations, keyed by unique names you choose. A server is a set of listeners and routes which make sense to group together. At this time, servers cannot have overlapping listeners. */
 			servers: { [k: string]: Server }
 		}
-		tls: {}
+		tls: {
+			certificates: tls.Certificates
+			/**Configures TLS certificate automation. */
+			automation: tls.Automation
+			session_tickets: tls.SessionTickets
+		}
 	}
 
 }
