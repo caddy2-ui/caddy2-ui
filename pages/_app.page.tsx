@@ -1,6 +1,6 @@
 import React from 'react';
 import App from 'next/app';
-import { ThemeProvider } from '@material-ui/styles';
+import { ThemeProvider } from '@material-ui/core';
 import { SnackbarProvider } from "notistack";
 import { CssBaseline, NoSsr } from '@material-ui/core';
 import { theme } from './theme';
