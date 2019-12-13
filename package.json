@@ -5,11 +5,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prestart": "node bin/init.js",
+    "caddy2": "cd example/ && caddy2 start --config caddy.json",
+    "dev": "next",
     "prebuild": "rm -rf .next",
     "build": "next build",
-    "postversion": "git push --follow-tags",
-    "postbuild": "rm -rf .next/cache"
+    "postbuild": "rm -rf .next/cache",
+    "postversion": "git push --follow-tags"
   },
   "repository": {
     "type": "git",
