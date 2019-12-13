@@ -3,6 +3,7 @@ import { Route, RouteList } from "../Route";
 import { ConnectionPolicies } from "../TLS";
 import { AutoHTTPSConfig } from "./AutoHTTPSConfig";
 import { ServerLogConfig } from "./ServerLogConfig";
+import { TLSConnectionPolicies } from "./tls_connection_policies";
 
 /**
  * HTTPErrorConfig determines how to handle errors
@@ -96,7 +97,7 @@ export interface Server {
    */
   Errors?: HTTPErrorConfig
 
-  // How to handle TLS connections.
+  /**How to handle TLS connections. */
   tls_connection_policies?: ConnectionPolicies
 
   // AutoHTTPS configures or disables automatic HTTPS within this server.

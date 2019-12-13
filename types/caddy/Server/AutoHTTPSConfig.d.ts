@@ -3,22 +3,16 @@
 // HTTPS is enabled automatically and by default when
 // qualifying hostnames are available from the config.
 export interface AutoHTTPSConfig {
-  // If true, automatic HTTPS will be entirely disabled.
+  /**If true, automatic HTTPS will be completely disabled. */
   disable?: boolean
 
-  // If true, only automatic HTTP->HTTPS redirects will
-  // be disabled.
+  /**If true, automatic HTTP->HTTPS redirects will be disabled, but automated certificate management will still be enabled. */
   disable_redirects?: boolean
 
-  // Hosts/domain names listed here will not be included
-  // in automatic HTTPS (they will not have certificates
-  // loaded nor redirects applied).
+  /**A list of hosts (domain names) to not include in automatic HTTPS. */
   skip?: string[]
 
-  // Hosts/domain names listed here will still be enabled
-  // for automatic HTTPS (unless in the Skip list), except
-  // that certificates will not be provisioned and managed
-  // for these names.
+  /**A list of hosts (domain names) to still enable automatic HTTPS for, except for managing certificates. */
   skip_certificates?: string[]
 
   // By default, automatic HTTPS will obtain and renew
