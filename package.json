@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "caddy2": "cd example/ && caddy2 start --config caddy.json",
+    "caddy2": "cd example/ && caddy2 run --config caddy.json",
     "dev": "next",
     "prebuild": "rm -rf .next",
     "build": "next build",
@@ -26,6 +26,7 @@
   "dependencies": {
     "@material-ui/core": "^4.7.1",
     "@material-ui/lab": "^4.0.0-alpha.34",
+    "axios": "^0.19.0",
     "dotenv": "^8.2.0",
     "fs-extra": "^8.1.0",
     "glob": "^7.1.6",
