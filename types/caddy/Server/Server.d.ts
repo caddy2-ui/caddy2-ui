@@ -109,13 +109,10 @@ export interface Server {
   // loops. Default: 1.
   max_rehandles?: int
 
-  // If true, will require that a request's Host header match
-  // the value of the ServerName sent by the client's TLS
-  // ClientHello; often a necessary safeguard when using TLS
-  // client authentication.
+  /**If true, enforce that an HTTP Host header matches the connection's ServerName (SNI) value from the TLS handshake. Important when using TLS client authentication. */
   strict_sni_host?: boolean
 
-  // Logs customizes how access logs are handled in this server.
+  /**Map of request host to custom logger name. For example, if you wanted all requests for `example.com` to be emitted to a logger with a unique name, you can do `"example.com": "example"` and then all access logs related to requests for example.com will use a logger named `http.log.access.example` (and same for error logs, but with `.error.` in the name instead). */
   logs?: ServerLogConfig
 
   // Enable experimental HTTP/3 support. Note that HTTP/3 is not a
