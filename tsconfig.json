@@ -17,7 +17,7 @@
     "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
-      "~modules/*": ["libs/*"],
+      "~modules/*": ["modules/*"],
       "~pages/*": ["pages/*"],
       "~libs/*": ["libs/*"]
     }
