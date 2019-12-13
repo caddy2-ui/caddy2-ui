@@ -1,0 +1,49 @@
+{
+  "name": "@shynome/caddy2-ui",
+  "version": "0.0.1",
+  "private": true,
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prestart": "node bin/init.js",
+    "prebuild": "rm -rf .next",
+    "build": "next build",
+    "postversion": "git push --follow-tags",
+    "postbuild": "rm -rf .next/cache"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shynome/caddy2-ui.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shynome/caddy2-ui/issues"
+  },
+  "homepage": "https://github.com/shynome/caddy2-ui#readme",
+  "dependencies": {
+    "@material-ui/core": "^4.7.1",
+    "@material-ui/lab": "^4.0.0-alpha.34",
+    "dotenv": "^8.2.0",
+    "fs-extra": "^8.1.0",
+    "glob": "^7.1.6",
+    "micro": "^9.3.5-canary.3",
+    "next": "^9.1.4",
+    "notistack": "^0.9.7",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
+  "devDependencies": {
+    "@material-ui/icons": "^4.5.1",
+    "@types/dotenv": "^8.2.0",
+    "@types/fs-extra": "^8.0.1",
+    "@types/glob": "^7.1.1",
+    "@types/jest": "^24.0.23",
+    "@types/node": "^12.12.14",
+    "@types/react": "^16.9.13",
+    "jest": "^24.9.0",
+    "typescript": "^3.7.2",
+    "unstated-next": "^1.1.0"
+  }
+}
