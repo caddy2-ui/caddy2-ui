@@ -1,6 +1,7 @@
 import { AdminConfig } from "./AdminConfig";
 import { Logging } from "./Logging";
-import { ModuleMap } from "./ModuleMap";
+import { Server } from "./Server";
+import { time } from "./go";
 
 /**
  * Config is the top (or beginning) of the Caddy configuration structure.
@@ -45,6 +46,18 @@ export interface Config {
 	 * app module name is the key, and the app's config is the
 	 * associated value.
 	 */
-	apps?: ModuleMap
+	apps?: {
+		http: {
+			/**The port to use for HTTP (optional; used for automatic HTTPS). */
+			http_port?: number,
+			/**The port to use for HTTPS (optional; used for automatic HTTPS). */
+			https_port?: number,
+			/**How long to allow servers to shut down gracefully before forcing them to stop. Duration values follow Go's time.Duration format, e.g. `"10s"` or `"1m30s"` */
+			grace_period: string,
+			/**Server configurations, keyed by unique names you choose. A server is a set of listeners and routes which make sense to group together. At this time, servers cannot have overlapping listeners. */
+			servers: { [k: string]: Server }
+		}
+		tls: {}
+	}
 
 }
