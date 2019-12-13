@@ -1,5 +1,27 @@
 import { Matcher } from "./Matcher";
-import { Handler } from "../Handler";
+import {
+	AuthenticationHandler,
+	CacheHandler,
+	EncodeHandler,
+	ErrorHandler,
+	FileServerHandler,
+	HeadersHandler,
+	MarkdownHandler,
+	RequestBodyHandler,
+	ReverseProxyHandler,
+	RewriteHandler,
+	StaticResponseHandler,
+	SubrouteHandler,
+	TemplatesHandler,
+	VarsHandler,
+} from "../Handler";
+
+type Handler =
+	AuthenticationHandler | CacheHandler | EncodeHandler |
+	ErrorHandler | FileServerHandler | HeadersHandler |
+	MarkdownHandler | RequestBodyHandler | ReverseProxyHandler |
+	RewriteHandler | StaticResponseHandler | SubrouteHandler |
+	TemplatesHandler | VarsHandler
 
 /**
  * <https://github.com/caddyserver/caddy/wiki/v2:-Documentation#httpserversroutes>
