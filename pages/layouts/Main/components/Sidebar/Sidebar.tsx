@@ -104,7 +104,6 @@ const Sidebar = props => {
         {...rest}
         className={clsx(classes.root, className)}
       >
-        <Divider className={classes.divider} />
         <SidebarNav
           className={classes.nav}
           pages={pages}
