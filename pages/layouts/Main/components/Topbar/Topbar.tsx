@@ -40,7 +40,8 @@ export const Topbar: React.StatelessComponent<Props> = props => {
         <Link href="/">
           <img
             alt="Logo"
-            src="/images/logos/logo--white.svg"
+            src="/images/logos/logo--white.png"
+            height={36}
           />
         </Link>
         <div className={classes.flexGrow} />

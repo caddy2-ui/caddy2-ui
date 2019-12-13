@@ -30,7 +30,7 @@ const Topbar: React.StatelessComponent<Props> = props => {
         <Link href="/">
           <img
             alt="Logo"
-            src="/images/logos/logo--white.svg"
+            src="/images/logos/logo--white.png"
           />
         </Link>
       </Toolbar>
