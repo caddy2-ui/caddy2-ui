@@ -57,7 +57,6 @@ export const Main: React.StatelessComponent<{}> = props => {
       />
       <main className={classes.content}>
         {children}
-        <Footer />
       </main>
     </div>
   );

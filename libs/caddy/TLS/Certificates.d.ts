@@ -20,6 +20,6 @@ export interface Certificates {
     /**The PEM encoding of the private key. */
     key: string,
     /**Optionally associate this certificate with tags ( as strings) to keep track of them. Useful for advanced certificate selection. */
-    tags: string[]
+    tags?: string[]
   }>
 }
