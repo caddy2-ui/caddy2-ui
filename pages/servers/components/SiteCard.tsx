@@ -37,7 +37,7 @@ export const SiteCard: React.StatelessComponent<Props> = ({ site, title }) => {
       <Divider />
       <CardContent>
         {site.listen.map((l) => (
-          <ListItem>
+          <ListItem key={l}>
             <ListItemText primary={l}></ListItemText>
           </ListItem>
         ))}
