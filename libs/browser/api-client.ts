@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from "axios";
 import { useMemo } from "react";
 import { Config } from "~libs/caddy/Config";
 
-export const enum Action {
+export enum Action {
   /**对象是数组的话追加, 对象的话创建或替换 */
   POST = 'post',
   /**对象是数组的话追加, 对象的话创建 */
@@ -12,9 +12,8 @@ export const enum Action {
   DELETE = 'delete',
 }
 
-export const servers = axios.create({
-  baseURL: '/caddy2-api/config/apps/http/servers'
-})
+export const BaseURL = '/caddy2-api/config'
+export const ServerBaseURL = BaseURL + '/apps/http/servers'
 
 export const api = axios.create({
   baseURL: '/caddy2-api/config'
@@ -24,11 +23,11 @@ import { caddy2Config } from "./caddy2";
 export const useUpdateConfig = (scopeInstace: AxiosInstance) => {
   const [config, setConfig] = caddy2Config.useContainer()
   const updateServer = useMemo(() => {
-    return async (
+    return async <T = any>(
+      dispath: (dispath: typeof setConfig, config: Config, data?: T, ) => void,
       action: Action,
       path: string,
-      dispath: (dispath: typeof setConfig, config: Config, data: any, ) => void | Promise<void>,
-      data?: any,
+      data?: T,
     ) => {
       switch (action) {
         case Action.POST:
@@ -44,9 +43,9 @@ export const useUpdateConfig = (scopeInstace: AxiosInstance) => {
           await scopeInstace.delete(path)
           break;
       }
-      let d = await scopeInstace.get(path).then(r => r.data)
+      let d = await scopeInstace.get<T>(path).then(r => r.data)
       await dispath(setConfig, config, d)
     }
-  }, [config, setConfig])
+  }, [config, setConfig, scopeInstace])
   return updateServer
 }

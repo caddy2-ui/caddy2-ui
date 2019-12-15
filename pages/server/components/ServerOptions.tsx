@@ -22,6 +22,7 @@ import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 
 export interface Props {
   server: Server
+  name: string
 }
 
 const createItem = (displayName: string, transform: (s: Server) => any) => ({
@@ -45,10 +46,13 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export const ServerOptions: React.StatelessComponent<Props> = ({ server }) => {
+import { useUpdateServerOptions } from "./ServerOptions.dispatch";
+
+export const ServerOptions: React.StatelessComponent<Props> = ({ server, name }) => {
 
   const classes = useStyles(useTheme())
   const [openExperimental, setOpenExperimental] = useState(typeof server.experimental_http3 !== 'undefined')
+  const updateServerOptions = useUpdateServerOptions(name)
 
   return (
     <Card>

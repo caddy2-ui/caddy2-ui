@@ -59,7 +59,7 @@ export default () => {
                 xl={3}
                 xs={12}
               >
-                <ServerOptions server={server}></ServerOptions>
+                <ServerOptions name={name} server={server}></ServerOptions>
               </Grid>
               <Grid item
                 lg={4}
