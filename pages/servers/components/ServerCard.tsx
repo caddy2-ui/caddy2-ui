@@ -23,11 +23,11 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export interface Props {
-  site: Server,
+  server: Server,
   title: string
 }
 
-export const SiteCard: React.StatelessComponent<Props> = ({ site, title }) => {
+export const ServerCard: React.StatelessComponent<Props> = ({ server, title }) => {
 
   const classes = useStyles(useTheme())
 
@@ -36,7 +36,7 @@ export const SiteCard: React.StatelessComponent<Props> = ({ site, title }) => {
       <CardHeader title={title} />
       <Divider />
       <CardContent>
-        {site.listen.map((l) => (
+        {server.listen.map((l) => (
           <ListItem key={l}>
             <ListItemText primary={l}></ListItemText>
           </ListItem>
@@ -54,4 +54,4 @@ export const SiteCard: React.StatelessComponent<Props> = ({ site, title }) => {
   )
 }
 
-export default SiteCard
+export default ServerCard

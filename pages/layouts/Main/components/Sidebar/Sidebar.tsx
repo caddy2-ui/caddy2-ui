@@ -52,7 +52,7 @@ const Sidebar: React.StatelessComponent<Props> = props => {
 
   const pages: Page[] = [
     {
-      title: 'Sites',
+      title: 'Servers',
       href: '/servers',
       icon: <DashboardIcon />
     },

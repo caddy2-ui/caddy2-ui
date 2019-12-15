@@ -6,7 +6,7 @@ import {
 } from "@material-ui/core";
 import { Server, getServers } from "./index";
 import { caddy2Config } from "~libs/browser/caddy2";
-import { SiteCard } from "./components/SiteCard";
+import { ServerCard } from "./components/ServerCard";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,9 +30,9 @@ export default () => {
               xl={3}
               xs={12}
             >
-              <SiteCard
+              <ServerCard
                 title={k}
-                site={servers[k]}
+                server={servers[k]}
               />
             </Grid>
           ))}
