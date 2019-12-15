@@ -12,7 +12,7 @@ import {
   Button,
 } from "@material-ui/core";
 import React from "react";
-import { Server } from "./index";
+import { Server } from "../index";
 
 export interface Props {
   listen: Server['listen']
@@ -21,7 +21,7 @@ export interface Props {
 export const Listen: React.StatelessComponent<Props> = (props) => {
   return (
     <Card>
-      <CardHeader title={'站点列表'}></CardHeader>
+      <CardHeader title={'监听地址列表'}></CardHeader>
       <CardContent>
         <List>
           {props.listen.map((site) => (

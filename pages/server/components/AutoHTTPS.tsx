@@ -19,7 +19,7 @@ import React, { useState } from "react";
 import { makeStyles, useTheme } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import { Server } from "./index";
+import { Server } from "../index";
 
 const useStyles = makeStyles(theme => ({
   nested: {
@@ -38,17 +38,17 @@ export const AutoHTTPS: React.StatelessComponent<Props> = ({ config }) => {
   const [skip2, setSkip2] = useState(true)
   return (
     <Card>
-      <CardHeader title={'HTTPS 配置'}></CardHeader>
+      <CardHeader title={'HTTPS 自动续签配置'}></CardHeader>
       <CardContent>
         <List>
           <ListItem>
-            <ListItemText primary={"自动续签 HTTPS"}></ListItemText>
+            <ListItemText primary={"开启自动续签"}></ListItemText>
             <ListItemSecondaryAction>
               <Switch checked={!config.disable}></Switch>
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem>
-            <ListItemText primary={"HTTP 跳转 HTTPS"}></ListItemText>
+            <ListItemText primary={"开启 HTTP 跳转 HTTPS"}></ListItemText>
             <ListItemSecondaryAction>
               <Switch checked={!config.disable_redirects}></Switch>
             </ListItemSecondaryAction>
@@ -56,7 +56,7 @@ export const AutoHTTPS: React.StatelessComponent<Props> = ({ config }) => {
           <ListItem button onClick={() => setSkip1(!skip1)}>
             <ListItemText primary={"不启用自动续签的域名"}></ListItemText>
             <ListItemSecondaryAction>
-              {skip1 ? <ExpandMoreIcon /> : <ExpandLessIcon />}
+              {skip1 ? <ExpandLessIcon /> : <ExpandMoreIcon />}
             </ListItemSecondaryAction>
           </ListItem>
           <Collapse in={skip1}>
@@ -69,9 +69,9 @@ export const AutoHTTPS: React.StatelessComponent<Props> = ({ config }) => {
             </List>
           </Collapse>
           <ListItem button onClick={() => setSkip2(!skip2)}>
-            <ListItemText primary={"skip_certificates (不太清楚)"}></ListItemText>
+            <ListItemText primary={"skip_certificates (不太清楚干啥的)"}></ListItemText>
             <ListItemSecondaryAction>
-              {skip2 ? <ExpandMoreIcon /> : <ExpandLessIcon />}
+              {skip2 ? <ExpandLessIcon /> : <ExpandMoreIcon />}
             </ListItemSecondaryAction>
           </ListItem>
           <Collapse in={skip2}>

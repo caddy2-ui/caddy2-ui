@@ -17,8 +17,9 @@ import {
   CardActions,
   Button,
 } from "@material-ui/core";
-import { Listen } from "./Listen";
-import { AutoHTTPS } from "./AutoHTTPS";
+import { Listen } from "./components/Listen";
+import { AutoHTTPS } from "./components/AutoHTTPS";
+import { ServerOptions } from "./components/ServerOptions";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -50,6 +51,14 @@ export default () => {
                 xs={12}
               >
                 <Listen listen={server.listen}></Listen>
+              </Grid>
+              <Grid item
+                lg={4}
+                md={6}
+                xl={3}
+                xs={12}
+              >
+                <ServerOptions server={server}></ServerOptions>
               </Grid>
               <Grid item
                 lg={4}
