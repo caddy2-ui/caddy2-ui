@@ -72,12 +72,12 @@ export const RouteCard: React.StatelessComponent<Props> = ({ route, id }) => {
         <Grid container direction='column' spacing={3}>
           {match.length === 0 ? null : (
             <Grid item>
-              <Typography>
+              <Typography component='div'>
                 <Typography className={classes.card_header} variant='h3'>Matcher</Typography>
                 <Table cellSpacing={0} size='small'>
                   <TableBody>
                     {match.map((matcher, id) => (
-                      <TableRow className={classes.item} key={id}>
+                      <TableRow hover className={classes.item} key={id}>
                         <TableCell>
                           <MatcherSpan matcher={matcher}></MatcherSpan>
                         </TableCell>
@@ -94,12 +94,12 @@ export const RouteCard: React.StatelessComponent<Props> = ({ route, id }) => {
             </Grid>
           )}
           <Grid item>
-            <Typography>
+            <Typography component='div'>
               <Typography className={classes.card_header} variant='h3'>Handler</Typography>
               <Table cellSpacing={0} size='small'>
                 <TableBody>
                   {handle.map((handler, id) => (
-                    <TableRow className={classes.item} key={id}>
+                    <TableRow hover className={classes.item} key={id}>
                       <TableCell>
                         {handler.handler}
                       </TableCell>

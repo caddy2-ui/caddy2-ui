@@ -47,7 +47,7 @@ const columns = [
 
 export const MatcherSpan: React.StatelessComponent<{ matcher: Matcher }> = ({ matcher }) => {
   return (
-    <Typography>
+    <Typography component='div'>
       {
         columns
           .map(({ transform, displayName }) => ({
