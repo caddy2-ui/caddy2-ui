@@ -23,6 +23,7 @@ import { AutoHTTPS } from "../components/AutoHTTPS";
 import { ServerOptions } from "../components/ServerOptions";
 import { Logs } from "../components/Logs";
 import Head from "next/head";
+import { RouteCard } from "./route";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -38,49 +39,30 @@ export default () => {
   const name = router.query.name as string
   const [config] = caddy2Config.useContainer()
   const server = getServer(config, name)
+  const { routes = [] } = server
 
   return (
     <ContentLayout>
       <Head>
-        <title>通用配置</title>
+        <title>路由</title>
       </Head>
       <Card>
-        <CardHeader title={"通用配置"}></CardHeader>
+        <CardHeader title={"路由配置"} />
         <Divider />
         <CardContent>
           <Grid container spacing={3}>
-            <Grid item
-              lg={4}
-              md={6}
-              xl={3}
-              xs={12}
-            >
-              <Listen listen={server.listen}></Listen>
-            </Grid>
-            <Grid item
-              lg={4}
-              md={6}
-              xl={3}
-              xs={12}
-            >
-              <ServerOptions name={name} server={server}></ServerOptions>
-            </Grid>
-            <Grid item
-              lg={4}
-              md={6}
-              xl={3}
-              xs={12}
-            >
-              <AutoHTTPS config={server.automatic_https}></AutoHTTPS>
-            </Grid>
-            <Grid item
-              lg={4}
-              md={6}
-              xl={3}
-              xs={12}
-            >
-              <Logs config={server.logs || {}}></Logs>
-            </Grid>
+            {
+              routes.map((route, id) => (
+                <Grid item key={id}
+                  lg={6}
+                  md={6}
+                  xl={4}
+                  xs={12}
+                >
+                  <RouteCard route={route} id={id} />
+                </Grid>
+              ))
+            }
           </Grid>
         </CardContent>
       </Card>

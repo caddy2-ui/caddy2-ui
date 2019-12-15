@@ -31,7 +31,7 @@ export const ContentLayout: React.StatelessComponent = (props) => {
   const [currentPath] = useState(router.pathname)
   const tabs: { value: string, label: string }[] = [
     { value: '/server', label: '通用配置' },
-    { value: '/server/routes', label: '路由规则' },
+    { value: '/server/routes', label: '路由' },
     { value: '/server/tls_connection', label: 'TLS 连接配置' },
   ]
 
