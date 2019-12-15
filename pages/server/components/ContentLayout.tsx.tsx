@@ -27,22 +27,22 @@ const useStyles = makeStyles(theme => ({
 
 export const ContentLayout: React.StatelessComponent = (props) => {
   const classes = useStyles(useTheme())
-  const tabs: { value: string, label: string }[] = [
-    { value: '/settings/admin', label: '管理端点' },
-    { value: '/settings/logging', label: '日志' },
-    { value: '/settings/storage', label: '存储' },
-  ]
   const router = useRouter()
-  const [currentPath] = useState(router.pathname === '/settings' ? tabs[0].value : router.pathname)
+  const [currentPath] = useState(router.pathname)
+  const tabs: { value: string, label: string }[] = [
+    { value: '/server', label: '通用配置' },
+    { value: '/server/route', label: '路由规则' },
+    { value: '/server/tls_connection', label: 'TLS 连接配置' },
+  ]
 
-  const handleTabsChange = (e, value) => {
-    router.push(value)
+  const handleTabsChange = (e: any, value: string) => {
+    router.push(value + '?name=' + router.query.name)
   }
 
   return (
     <MainLayout>
-      <Container className={classes.root} maxWidth='lg'>
-        <Header></Header>
+      <Container className={classes.root} maxWidth={false}>
+        <Header />
         <Tabs
           className={classes.tabs}
           onChange={handleTabsChange}

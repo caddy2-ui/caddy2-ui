@@ -3,6 +3,7 @@ import { caddy2Config } from "~libs/browser/caddy2";
 import { getServer } from "./index";
 import { useRouter } from "next/router";
 import { Main as MainLayout } from "~pages/layouts";
+import { ContentLayout } from "./components/ContentLayout.tsx";
 import { makeStyles, useTheme } from "@material-ui/core";
 import {
   Container,
@@ -21,6 +22,7 @@ import { Listen } from "./components/Listen";
 import { AutoHTTPS } from "./components/AutoHTTPS";
 import { ServerOptions } from "./components/ServerOptions";
 import { Logs } from "./components/Logs";
+import Head from "next/head";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -38,49 +40,50 @@ export default () => {
   const server = getServer(config, name)
 
   return (
-    <MainLayout>
-      <Container className={classes.root} maxWidth={false}>
-        <Card>
-          <CardHeader title={name}></CardHeader>
-          <Divider />
-          <CardContent>
-            <Grid container spacing={3}>
-              <Grid item
-                lg={4}
-                md={6}
-                xl={3}
-                xs={12}
-              >
-                <Listen listen={server.listen}></Listen>
-              </Grid>
-              <Grid item
-                lg={4}
-                md={6}
-                xl={3}
-                xs={12}
-              >
-                <ServerOptions name={name} server={server}></ServerOptions>
-              </Grid>
-              <Grid item
-                lg={4}
-                md={6}
-                xl={3}
-                xs={12}
-              >
-                <AutoHTTPS config={server.automatic_https}></AutoHTTPS>
-              </Grid>
-              <Grid item
-                lg={4}
-                md={6}
-                xl={3}
-                xs={12}
-              >
-                <Logs config={server.logs || {}}></Logs>
-              </Grid>
+    <ContentLayout>
+      <Head>
+        <title>通用配置</title>
+      </Head>
+      <Card>
+        <CardHeader title={"通用配置"}></CardHeader>
+        <Divider />
+        <CardContent>
+          <Grid container spacing={3}>
+            <Grid item
+              lg={4}
+              md={6}
+              xl={3}
+              xs={12}
+            >
+              <Listen listen={server.listen}></Listen>
             </Grid>
-          </CardContent>
-        </Card>
-      </Container>
-    </MainLayout>
+            <Grid item
+              lg={4}
+              md={6}
+              xl={3}
+              xs={12}
+            >
+              <ServerOptions name={name} server={server}></ServerOptions>
+            </Grid>
+            <Grid item
+              lg={4}
+              md={6}
+              xl={3}
+              xs={12}
+            >
+              <AutoHTTPS config={server.automatic_https}></AutoHTTPS>
+            </Grid>
+            <Grid item
+              lg={4}
+              md={6}
+              xl={3}
+              xs={12}
+            >
+              <Logs config={server.logs || {}}></Logs>
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card>
+    </ContentLayout>
   )
 }
