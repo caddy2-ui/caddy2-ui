@@ -15,9 +15,10 @@ import {
   Button,
   Collapse,
 } from "@material-ui/core";
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles, useTheme } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import { Server } from "./index";
 
 const useStyles = makeStyles(theme => ({
@@ -33,6 +34,8 @@ export interface Props {
 
 export const AutoHTTPS: React.StatelessComponent<Props> = ({ config }) => {
   const classes = useStyles(useTheme())
+  const [skip1, setSkip1] = useState(true)
+  const [skip2, setSkip2] = useState(true)
   return (
     <Card>
       <CardHeader title={'HTTPS 配置'}></CardHeader>
@@ -50,13 +53,13 @@ export const AutoHTTPS: React.StatelessComponent<Props> = ({ config }) => {
               <Switch checked={!config.disable_redirects}></Switch>
             </ListItemSecondaryAction>
           </ListItem>
-          <ListItem>
+          <ListItem button onClick={() => setSkip1(!skip1)}>
             <ListItemText primary={"不启用自动续签的域名"}></ListItemText>
             <ListItemSecondaryAction>
-              <ExpandMoreIcon></ExpandMoreIcon>
+              {skip1 ? <ExpandMoreIcon /> : <ExpandLessIcon />}
             </ListItemSecondaryAction>
           </ListItem>
-          <Collapse in={true}>
+          <Collapse in={skip1}>
             <List component="div" disablePadding>
               {(config.skip || ['没有']).map(h => (
                 <ListItem key={h} className={classes.nested}>
@@ -65,13 +68,13 @@ export const AutoHTTPS: React.StatelessComponent<Props> = ({ config }) => {
               ))}
             </List>
           </Collapse>
-          <ListItem>
+          <ListItem button onClick={() => setSkip2(!skip2)}>
             <ListItemText primary={"skip_certificates (不太清楚)"}></ListItemText>
             <ListItemSecondaryAction>
-              <ExpandMoreIcon></ExpandMoreIcon>
+              {skip2 ? <ExpandMoreIcon /> : <ExpandLessIcon />}
             </ListItemSecondaryAction>
           </ListItem>
-          <Collapse in={true}>
+          <Collapse in={skip2}>
             <List component="div" disablePadding>
               {(config.skip_certificates || ['没有']).map(h => (
                 <ListItem key={h} className={classes.nested}>
