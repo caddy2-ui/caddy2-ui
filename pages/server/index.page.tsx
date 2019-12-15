@@ -20,6 +20,7 @@ import {
 import { Listen } from "./components/Listen";
 import { AutoHTTPS } from "./components/AutoHTTPS";
 import { ServerOptions } from "./components/ServerOptions";
+import { Logs } from "./components/Logs";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -67,6 +68,14 @@ export default () => {
                 xs={12}
               >
                 <AutoHTTPS config={server.automatic_https}></AutoHTTPS>
+              </Grid>
+              <Grid item
+                lg={4}
+                md={6}
+                xl={3}
+                xs={12}
+              >
+                <Logs config={server.logs || {}}></Logs>
               </Grid>
             </Grid>
           </CardContent>
