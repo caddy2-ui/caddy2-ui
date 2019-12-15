@@ -5,6 +5,7 @@ import { Drawer } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import SettingsIcon from '@material-ui/icons/Settings';
 import LockIcon from '@material-ui/icons/Lock';
+import EditIcon from '@material-ui/icons/Edit';
 
 import { SidebarNav } from './components';
 
@@ -65,6 +66,11 @@ const Sidebar: React.StatelessComponent<Props> = props => {
       title: 'Settings',
       href: '/settings',
       icon: <SettingsIcon />
+    },
+    {
+      title: 'Editor by JSON',
+      href: '/editor',
+      icon: <EditIcon />
     }
   ];
 
