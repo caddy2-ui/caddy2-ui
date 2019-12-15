@@ -2,7 +2,7 @@ import React, { } from "react";
 import { caddy2Config } from "~libs/browser/caddy2";
 import { getServer } from "./index";
 import { useRouter } from "next/router";
-import { ContentLayout } from "./components/ContentLayout.tsx";
+import { ContentLayout } from "./components/ContentLayout";
 import { makeStyles, useTheme } from "@material-ui/core";
 import {
   Container,

@@ -69,7 +69,7 @@ export const ConnectionPolicyCard: React.StatelessComponent<Props> = ({ policy }
             <List>
               {TrustedCACerts.map((cert) => (
                 <ListItem key={cert.slice(-10)} className={classes.nested}>
-                  <ListItemText primary={cert}></ListItemText>
+                  <ListItemText primary={cert.slice(0, 50)}></ListItemText>
                 </ListItem>
               ))}
             </List>
@@ -81,7 +81,7 @@ export const ConnectionPolicyCard: React.StatelessComponent<Props> = ({ policy }
             <List>
               {TrustedLeafCert.map((cert) => (
                 <ListItem key={cert.slice(-10)} className={classes.nested}>
-                  <ListItemText primary={cert}></ListItemText>
+                  <ListItemText primary={cert.slice(0, 50)}></ListItemText>
                 </ListItem>
               ))}
             </List>

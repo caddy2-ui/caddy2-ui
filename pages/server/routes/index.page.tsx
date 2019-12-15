@@ -1,9 +1,9 @@
 import React, { } from "react";
 import { caddy2Config } from "~libs/browser/caddy2";
-import { getServer } from "./index";
+import { getServer } from "../index";
 import { useRouter } from "next/router";
 import { Main as MainLayout } from "~pages/layouts";
-import { ContentLayout } from "./components/ContentLayout";
+import { ContentLayout } from "../components/ContentLayout";
 import { makeStyles, useTheme } from "@material-ui/core";
 import {
   Container,
@@ -18,10 +18,10 @@ import {
   CardActions,
   Button,
 } from "@material-ui/core";
-import { Listen } from "./components/Listen";
-import { AutoHTTPS } from "./components/AutoHTTPS";
-import { ServerOptions } from "./components/ServerOptions";
-import { Logs } from "./components/Logs";
+import { Listen } from "../components/Listen";
+import { AutoHTTPS } from "../components/AutoHTTPS";
+import { ServerOptions } from "../components/ServerOptions";
+import { Logs } from "../components/Logs";
 import Head from "next/head";
 
 const useStyles = makeStyles(theme => ({
