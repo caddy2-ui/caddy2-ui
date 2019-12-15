@@ -71,7 +71,11 @@ export const ServerOptions: React.StatelessComponent<Props> = ({ server, name })
             <ListItemText primary={'strict_sni_host'}></ListItemText>
             <ListItemSecondaryAction>
               <Tooltip placement='top' title={'对客户端验证很重要, 如果有客户端验证的话开启这个选项'}>
-                <Switch checked={!!server.strict_sni_host}></Switch>
+                <Switch
+                  checked={!!server.strict_sni_host}
+                  value={!!server.strict_sni_host}
+                  onChange={(e, v) => options.setStrictSNIHost(v)}
+                />
               </Tooltip>
             </ListItemSecondaryAction>
           </ListItem>

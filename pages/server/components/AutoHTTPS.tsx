@@ -96,7 +96,11 @@ export const AutoHTTPS: React.StatelessComponent<Props> = ({ config }) => {
           <ListItem>
             <ListItemText primary={"忽略已存在的证书"}></ListItemText>
             <ListItemSecondaryAction>
-              <Switch checked={!!config.ignore_loaded_certificates}></Switch>
+              <Switch
+                checked={!!config.ignore_loaded_certificates}
+                value={!!config.ignore_loaded_certificates}
+                onChange={(e, v) => options.setHTTPSIgnoreLoadedCertificates(v)}
+              />
             </ListItemSecondaryAction>
           </ListItem>
         </List>
