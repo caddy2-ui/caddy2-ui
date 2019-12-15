@@ -3,6 +3,7 @@ import { caddy2Config } from "~libs/browser/caddy2";
 import { makeStyles, useTheme, colors } from "@material-ui/core";
 import { Main as MainLayout } from "~pages/layouts";
 import { Server } from "../index";
+import Link from "next/link";
 import {
   Container,
   Card,
@@ -14,6 +15,7 @@ import {
   ListItemText,
   Divider,
 } from "@material-ui/core";
+import EditIcon from "@material-ui/icons/Edit";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -40,6 +42,14 @@ export const SiteCard: React.StatelessComponent<Props> = ({ site, title }) => {
           </ListItem>
         ))}
       </CardContent>
+      <CardActions>
+        <Link href={`/server?name=${encodeURIComponent(title)}`}>
+          <Button>
+            <EditIcon />
+            编辑
+        </Button>
+        </Link>
+      </CardActions>
     </Card>
   )
 }
