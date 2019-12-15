@@ -3,12 +3,6 @@ import {
   Card,
   CardHeader,
   CardContent,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemSecondaryAction,
-  Collapse,
-  Paper,
   Divider,
   colors,
   IconButton,
@@ -18,8 +12,10 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  TableHead,
 } from "@material-ui/core";
 import { Route, Matcher } from "~libs/caddy/Route";
+import EditIcon from '@material-ui/icons/Edit';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import KeyboardTabIcon from '@material-ui/icons/KeyboardTab';
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
@@ -54,7 +50,7 @@ export const RouteCard: React.StatelessComponent<Props> = ({ route, id }) => {
   const title = 'Route-' + id + (route.group ? ` : ${route.group}` : '')
   const { match = [], handle = [] } = route
   return (
-    <Card>
+    <Card draggable>
       <CardHeader
         title={title}
         action={
@@ -72,36 +68,22 @@ export const RouteCard: React.StatelessComponent<Props> = ({ route, id }) => {
         <Grid container direction='column' spacing={3}>
           {match.length === 0 ? null : (
             <Grid item>
-              <Typography component='div'>
-                <Typography className={classes.card_header} variant='h3'>Matcher</Typography>
-                <Table cellSpacing={0} size='small'>
-                  <TableBody>
-                    {match.map((matcher, id) => (
-                      <TableRow hover className={classes.item} key={id}>
-                        <TableCell>
-                          <MatcherSpan matcher={matcher}></MatcherSpan>
-                        </TableCell>
-                        <TableCell style={{ width: 44 }} padding='none'>
-                          <IconButton>
-                            <ArrowDownwardIcon fontSize='small' />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </Typography>
-            </Grid>
-          )}
-          <Grid item>
-            <Typography component='div'>
-              <Typography className={classes.card_header} variant='h3'>Handler</Typography>
               <Table cellSpacing={0} size='small'>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>
+                      <Typography className={classes.card_header} variant='h4'>Matcher</Typography>
+                    </TableCell>
+                    <TableCell padding='none'>
+                      <IconButton><EditIcon fontSize='small' /></IconButton>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
                 <TableBody>
-                  {handle.map((handler, id) => (
-                    <TableRow hover className={classes.item} key={id}>
+                  {match.map((matcher, id) => (
+                    <TableRow draggable hover className={classes.item} key={id}>
                       <TableCell>
-                        {handler.handler}
+                        <MatcherSpan matcher={matcher}></MatcherSpan>
                       </TableCell>
                       <TableCell style={{ width: 44 }} padding='none'>
                         <IconButton>
@@ -112,7 +94,35 @@ export const RouteCard: React.StatelessComponent<Props> = ({ route, id }) => {
                   ))}
                 </TableBody>
               </Table>
-            </Typography>
+            </Grid>
+          )}
+          <Grid item>
+            <Table cellSpacing={0} size='small'>
+              <TableHead>
+                <TableRow>
+                  <TableCell>
+                    <Typography className={classes.card_header} variant='h4'>Handler</Typography>
+                  </TableCell>
+                  <TableCell padding='none'>
+                    <IconButton><EditIcon fontSize='small' /></IconButton>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {handle.map((handler, id) => (
+                  <TableRow draggable hover className={classes.item} key={id}>
+                    <TableCell>
+                      {handler.handler}
+                    </TableCell>
+                    <TableCell style={{ width: 44 }} padding='none'>
+                      <IconButton>
+                        <ArrowDownwardIcon fontSize='small' />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </Grid>
         </Grid>
       </CardContent>
