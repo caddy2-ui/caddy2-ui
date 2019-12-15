@@ -11,7 +11,10 @@ import axios from "axios";
 export const useUpdateServer = (name: string) => {
   const instace = useMemo(() => {
     return axios.create({
-      baseURL: ServerBaseURL + '/' + name
+      baseURL: ServerBaseURL + '/' + name,
+      headers: {
+        'Content-Type': 'application/json'
+      }
     })
   }, [name])
   const update = useUpdateConfig(instace)

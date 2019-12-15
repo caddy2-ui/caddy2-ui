@@ -42,8 +42,10 @@
               "terminal": true
             }
           ],
+          "experimental_http3": true,
           "automatic_https": {
-            "disable": true
+            "disable": true,
+            "skip": ["localhost"]
           },
           "tls_connection_policies": [
             {

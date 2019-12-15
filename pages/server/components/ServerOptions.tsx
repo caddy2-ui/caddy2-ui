@@ -46,13 +46,13 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-import { useUpdateServerOptions } from "./ServerOptions.dispatch";
+import { useUpdateServerOptions } from "../updateServerOptions";
 
 export const ServerOptions: React.StatelessComponent<Props> = ({ server, name }) => {
 
   const classes = useStyles(useTheme())
   const [openExperimental, setOpenExperimental] = useState(typeof server.experimental_http3 !== 'undefined')
-  const updateServerOptions = useUpdateServerOptions(name)
+  const options = useUpdateServerOptions()
 
   return (
     <Card>
@@ -86,7 +86,11 @@ export const ServerOptions: React.StatelessComponent<Props> = ({ server, name })
               <ListItem className={classes.nested}>
                 <ListItemText primary={'启用 http3 支持'}></ListItemText>
                 <ListItemSecondaryAction>
-                  <Switch checked={!!server.experimental_http3}></Switch>
+                  <Switch
+                    checked={!!server.experimental_http3}
+                    onChange={(e, value) => options.setHTTP3(value)}
+                    value={!!server.experimental_http3}
+                  />
                 </ListItemSecondaryAction>
               </ListItem>
             </List>

@@ -20,6 +20,7 @@ export const api = axios.create({
 })
 
 import { caddy2Config } from "./caddy2";
+import copy from "fast-copy";
 export const useUpdateConfig = (scopeInstace: AxiosInstance) => {
   const [config, setConfig] = caddy2Config.useContainer()
   const updateServer = useMemo(() => {
@@ -44,7 +45,7 @@ export const useUpdateConfig = (scopeInstace: AxiosInstance) => {
           break;
       }
       let d = await scopeInstace.get<T>(path).then(r => r.data)
-      await dispath(setConfig, config, d)
+      await dispath(setConfig, copy(config), d)
     }
   }, [config, setConfig, scopeInstace])
   return updateServer

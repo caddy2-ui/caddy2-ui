@@ -24,9 +24,9 @@ export const Listen: React.StatelessComponent<Props> = (props) => {
       <CardHeader title={'监听地址列表'}></CardHeader>
       <CardContent>
         <List>
-          {props.listen.map((site) => (
-            <ListItem>
-              <ListItemText primary={site}></ListItemText>
+          {props.listen.map((addr) => (
+            <ListItem key={addr}>
+              <ListItemText primary={addr}></ListItemText>
             </ListItem>
           ))}
         </List>
