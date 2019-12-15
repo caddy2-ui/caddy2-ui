@@ -1,9 +1,8 @@
 import { ClientAuthentication } from "./ClientAuthentication";
-import { Matcher } from "../Route";
 
 export interface ConnectionPolicy {
   /**Configures how to match this policy with a TLS ClientHello. If the policy matches, it will be used. */
-  match?: Matcher,
+  match?: { sni?: string[] },
   /**Protocols to use for Application-Layer Protocol Negotiation (ALPN) during the handshake. */
   alpn?: string[],
   /**The list of cipher suites to support. */
