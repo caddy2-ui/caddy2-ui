@@ -1,6 +1,6 @@
 import { time, int } from "../go";
 import { Route, RouteList } from "../Route";
-import { ConnectionPolicies } from "../TLS";
+import { ConnectionPolicy } from "./ConnectionPolicy";
 import { AutoHTTPSConfig } from "./AutoHTTPSConfig";
 import { ServerLogConfig } from "./ServerLogConfig";
 import { TLSConnectionPolicies } from "./tls_connection_policies";
@@ -98,7 +98,7 @@ export interface Server {
   Errors?: HTTPErrorConfig
 
   /**How to handle TLS connections. */
-  tls_connection_policies?: ConnectionPolicies
+  tls_connection_policies?: ConnectionPolicy[]
 
   // AutoHTTPS configures or disables automatic HTTPS within this server.
   // HTTPS is enabled automatically and by default when qualifying names
