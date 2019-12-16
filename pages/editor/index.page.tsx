@@ -12,11 +12,11 @@ const DynamicEditorWithNoSSR = dynamic(
   { ssr: false }
 )
 
-
 const useStyles = makeStyles(theme => ({
   root: {
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(3),
+    height: '100%',
   },
 }))
 
@@ -26,7 +26,7 @@ export default () => {
 
   return (
     <MainLayout>
-      <Container className={classes.root} maxWidth='lg'>
+      <Container className={classes.root} maxWidth={false}>
         <DynamicEditorWithNoSSR />
       </Container>
     </MainLayout>
