@@ -1,10 +1,12 @@
 
-export const Templates = {
-  uri: 'http://caddy2-config/app/http/server/handler/templates',
+export const Vars = {
+  uri: 'http://caddy2-config/app/http/server/handler/vars',
   schema: {
     type: 'object',
+    properties: {
+      "handler": { enum: ['vars'] },
+    },
     patternProperties: {
-      "handler": { type: 'vars' },
       "^": { type: 'string' },
     }
   }
