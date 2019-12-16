@@ -31,6 +31,7 @@
     "fs-extra": "^8.1.0",
     "glob": "^7.1.6",
     "micro": "^9.3.5-canary.3",
+    "monaco-editor-webpack-plugin": "^1.7.0",
     "next": "^9.1.5",
     "notistack": "^0.9.7",
     "react": "^16.12.0",
@@ -46,6 +47,7 @@
     "@types/react": "^16.9.13",
     "fast-copy": "^2.0.4",
     "jest": "^24.9.0",
+    "monaco-editor": "^0.18.1",
     "typescript": "^3.7.2",
     "unstated-next": "^1.1.0"
   }

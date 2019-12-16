@@ -22,6 +22,6 @@
       "~libs/*": ["libs/*"]
     }
   },
-  "exclude": ["node_modules", ".next"],
+  "exclude": ["node_modules", ".next", "public"],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "ormconfig.js"]
 }
