@@ -2,8 +2,19 @@ import React, { useRef, useEffect } from 'react'
 import { caddy2Config } from "~libs/browser/caddy2";
 import *as monaco from "monaco-editor";
 import { schmea } from "./schema";
+import { makeStyles, useTheme, colors } from "@material-ui/core";
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: '100%',
+    height: '100%',
+  }
+}))
 
 export const Editor: React.StatelessComponent = (props) => {
+
+  const classes = useStyles(useTheme())
+
   const [config] = caddy2Config.useContainer()
   const f = useRef()
   useEffect(() => {
@@ -28,16 +39,21 @@ export const Editor: React.StatelessComponent = (props) => {
         ...schmea.schemas,
       ],
     })
-    const editor = monaco.editor.create(f.current, {
-      model,
-    })
+    const editor = monaco.editor.create(
+      f.current,
+      {
+        model,
+        fontSize: 16,
+        wordWrap: 'on',
+      },
+    )
     return () => {
       editor.dispose()
       model.dispose()
     }
   }, [f, config])
 
-  return <div style={{ height: 700 }} ref={f}></div>
+  return <div className={classes.root} ref={f}></div>
 }
 
 export default Editor
