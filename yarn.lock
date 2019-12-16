@@ -5037,10 +5037,9 @@ mkdirp@0.5.1, mkdirp@^0.5.0, mkdirp@^0.5.1:
   dependencies:
     minimist "0.0.8"
 
-monaco-editor-webpack-plugin@^1.7.0:
+"monaco-editor-webpack-plugin@git+https://github.com/shynome/monaco-editor-webpack-plugin.git#fix/nextjs":
   version "1.7.0"
-  resolved "https://registry.npm.taobao.org/monaco-editor-webpack-plugin/download/monaco-editor-webpack-plugin-1.7.0.tgz#920cbeecca25f15d70d568a7e11b0ba4daf1ae83"
-  integrity sha1-kgy+7Mol8V1w1Win4RsLpNrxroM=
+  resolved "git+https://github.com/shynome/monaco-editor-webpack-plugin.git#aeb193cb80707f46a73d1255ff0c1fa13eb15fee"
   dependencies:
     "@types/webpack" "^4.4.19"
 

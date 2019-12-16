@@ -7,7 +7,9 @@
   "scripts": {
     "caddy2": "cd example/ && caddy2 run --config caddy.json",
     "dev": "next",
-    "prebuild": "rm -rf .next",
+    "start": "next start",
+    "predev": "rm -rf public/monaco-editor",
+    "prebuild": "rm -rf .next public/monaco-editor",
     "build": "next build",
     "postbuild": "rm -rf .next/cache",
     "postversion": "git push --follow-tags"
@@ -31,7 +33,7 @@
     "fs-extra": "^8.1.0",
     "glob": "^7.1.6",
     "micro": "^9.3.5-canary.3",
-    "monaco-editor-webpack-plugin": "^1.7.0",
+    "monaco-editor-webpack-plugin": "git+https://github.com/shynome/monaco-editor-webpack-plugin.git#fix/nextjs",
     "next": "^9.1.5",
     "notistack": "^0.9.7",
     "react": "^16.12.0",
