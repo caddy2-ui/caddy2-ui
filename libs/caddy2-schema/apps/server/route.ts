@@ -14,7 +14,7 @@ export const Route = {
       handle: {
         type: 'array',
         items: {
-          oneOf: [
+          anyOf: [
             { $ref: 'http://caddy2-config/app/http/server/handler/authentication' },
             { $ref: 'http://caddy2-config/app/http/server/handler/cache' },
             { $ref: 'http://caddy2-config/app/http/server/handler/encode' },
