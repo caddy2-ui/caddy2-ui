@@ -1,5 +1,5 @@
 
-export const Server = {
+export const TLSConnectionPolicy = {
   uri: 'http://caddy2-config/app/http/server/tls_connection_policy',
   schema: {
     match: {
