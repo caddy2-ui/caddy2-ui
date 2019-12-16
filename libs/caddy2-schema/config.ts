@@ -1,6 +1,6 @@
 
 export const Config = {
-  uri: 'http://caddy2-config/Config',
+  uri: 'http://caddy2-config/config',
   schema: {
     type: 'object',
     properties: {
