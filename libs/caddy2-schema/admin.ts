@@ -1,6 +1,6 @@
 
 export const AdminConfig = {
-  uri: 'http://caddy2-config/AdminConfig',
+  uri: 'http://caddy2-config/admin',
   schema: {
     type: 'object',
     properties: {

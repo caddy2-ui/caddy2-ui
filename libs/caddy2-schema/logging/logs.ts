@@ -1,6 +1,6 @@
 
 export const LogSampling = {
-  uri: "http://caddy2-config/Logging/LogSampling",
+  uri: "http://caddy2-config/logging/LogSampling",
   schema: {
     interval: {
       type: 'string',
@@ -25,7 +25,7 @@ export const LogSampling = {
 }
 
 export const CustomLog = {
-  uri: "http://caddy2-config/Logging/CustomLog",
+  uri: "http://caddy2-config/logging/logs",
   schema: {
     writer: {
       description: 'The writer defines where log entries are emitted.',
@@ -38,7 +38,7 @@ export const CustomLog = {
       description: 'Level is the minimum level to emit, and is inclusive.',
     },
     sampling: {
-      $ref: "http://caddy2-config/Logging/LogSampling",
+      $ref: "http://caddy2-config/logging/LogSampling",
     },
     include: {
       type: 'array',

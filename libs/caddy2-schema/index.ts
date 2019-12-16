@@ -1,7 +1,8 @@
 import { languages } from "monaco-editor";
-import { Config } from "./Config";
-import { AdminConfig } from "./AdminConfig";
-import { schemas as Logging } from "./Logging";
+import { Config } from "./root";
+import { AdminConfig } from "./admin";
+import { schemas as Logging } from "./logging";
+import { schemas as App } from "./apps";
 
 export const schmea: languages.json.DiagnosticsOptions = {
   validate: true,
@@ -9,5 +10,6 @@ export const schmea: languages.json.DiagnosticsOptions = {
     Config,
     AdminConfig,
     ...Logging,
+    ...App,
   ]
 }
