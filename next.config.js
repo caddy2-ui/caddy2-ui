@@ -27,6 +27,8 @@ module.exports = {
     config.plugins.push(
       new MonacoWebpackPlugin({
         output: '../public/monaco-editor',
+        baseUrl: '/monaco-editor',
+        languages: ["json"],
       })
     )
 
