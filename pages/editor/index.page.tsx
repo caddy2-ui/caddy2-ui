@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 import { makeStyles, useTheme, colors } from "@material-ui/core";
 import { Main as MainLayout } from "~pages/layouts";
+import { caddy2Config } from "~libs/browser/caddy2";
 import {
   Container,
   Grid,
@@ -23,11 +24,12 @@ const useStyles = makeStyles(theme => ({
 export default () => {
 
   const classes = useStyles(useTheme())
+  const [config] = caddy2Config.useContainer()
 
   return (
     <MainLayout>
       <Container className={classes.root} maxWidth={false}>
-        <DynamicEditorWithNoSSR />
+        <DynamicEditorWithNoSSR config={config} />
       </Container>
     </MainLayout>
   )

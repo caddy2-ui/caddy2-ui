@@ -1,5 +1,4 @@
 import React, { useRef, useEffect } from 'react'
-import { caddy2Config } from "~libs/browser/caddy2";
 import *as monaco from "monaco-editor";
 import { schmea } from "./schema";
 import { makeStyles, useTheme, colors } from "@material-ui/core";
@@ -11,11 +10,15 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export const Editor: React.StatelessComponent = (props) => {
+export interface Props {
+  schema?: string,
+  config: any,
+}
+
+export const Editor: React.StatelessComponent<Props> = ({ config, schema = 'http://caddy2-config/config' }) => {
 
   const classes = useStyles(useTheme())
 
-  const [config] = caddy2Config.useContainer()
   const f = useRef()
   useEffect(() => {
     if (!f.current) {
@@ -23,7 +26,7 @@ export const Editor: React.StatelessComponent = (props) => {
     }
 
     let val = JSON.stringify(config, null, 2)
-    let modelUri = monaco.Uri.parse('a://b/foo.json')
+    let modelUri = monaco.Uri.parse('caddy2-edit:/config/tmp.json')
     let model = monaco.editor.createModel(val, `json`, modelUri)
 
     monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
@@ -32,9 +35,7 @@ export const Editor: React.StatelessComponent = (props) => {
         {
           uri: 'http://caddy2-config/config-edit',
           fileMatch: [modelUri.toString()],
-          schema: {
-            $ref: 'http://caddy2-config/config',
-          }
+          schema: { $ref: schema, }
         },
         ...schmea.schemas,
       ],
@@ -51,7 +52,7 @@ export const Editor: React.StatelessComponent = (props) => {
       editor.dispose()
       model.dispose()
     }
-  }, [f, config])
+  }, [f])
 
   return <div className={classes.root} ref={f}></div>
 }
