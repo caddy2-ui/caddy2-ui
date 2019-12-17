@@ -39,7 +39,7 @@ export const EditorCard: React.StatelessComponent<Props> = (props) => {
     const monaco = await import('monaco-editor')
     await new Promise(rl => setTimeout(rl, delay))
     let markersLength = monaco.editor.getModelMarkers({
-      resource: monaco.Uri.parse('caddy2-edit:' + editor.state.file),
+      resource: monaco.Uri.parse('caddy2-edit:' + file),
     }).length
     let hasMarker = markersLength !== 0
     setHasMarker(hasMarker)

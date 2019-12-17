@@ -25,7 +25,7 @@ const EditorPage = () => {
   return (
     <MainLayout disableEditorDialog>
       <Container className={classes.root} maxWidth={false}>
-        <EditorCard config={JSON.stringify(config, null, 2)} file='caddy2-edit:/config/editor.json' />
+        <EditorCard config={JSON.stringify(config, null, 2)} file='/config/editor.json' />
       </Container>
     </MainLayout>
   )
