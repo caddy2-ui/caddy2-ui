@@ -11,6 +11,7 @@ import { StaticResponse } from './static_response'
 import { Subroute } from './subroute'
 import { Templates } from './templates'
 import { Vars } from './vars'
+import { ReverseProxy } from "./reverse_proxy";
 
 export const schemas = [
   Authentication,
@@ -26,4 +27,5 @@ export const schemas = [
   Subroute,
   Templates,
   Vars,
+  ReverseProxy,
 ]
