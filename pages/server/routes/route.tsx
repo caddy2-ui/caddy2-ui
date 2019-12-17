@@ -1,4 +1,4 @@
-import React, { } from "react";
+import React, { Fragment } from "react";
 import {
   Card,
   CardHeader,
@@ -8,10 +8,12 @@ import {
   Grid,
 } from "@material-ui/core";
 import { Route } from "~libs/caddy/Route";
+import EditIcon from '@material-ui/icons/Edit';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import KeyboardTabIcon from '@material-ui/icons/KeyboardTab';
 import { MatchCard } from "./MatchCard";
 import { HandleCard } from "./HandleCard";
+import { useEditor } from "~pages/editor";
 
 import { makeStyles, useTheme } from "@material-ui/core";
 
@@ -29,14 +31,34 @@ export const RouteCard: React.StatelessComponent<Props> = ({ route, id }) => {
   const classes = useStyles(useTheme())
   const title = 'Route-' + id + (route.group ? ` : ${route.group}` : '')
   const { match = [], handle = [] } = route
+
+  const editor = useEditor()
+  const openEditor = () => {
+    editor.open(
+      {
+        config: route,
+        file: '/config/app/http/server/route/config.json'
+      },
+      (config) => {
+        console.log(config)
+        editor.close()
+      },
+    )
+  }
+
   return (
     <Card>
       <CardHeader
         title={title}
         action={
-          <IconButton>
-            {route.terminal ? <KeyboardTabIcon fontSize='small' /> : <ArrowForwardIcon fontSize='small' />}
-          </IconButton>
+          <Fragment>
+            <IconButton onClick={()=>openEditor()}>
+              <EditIcon fontSize='small' />
+            </IconButton>
+            <IconButton>
+              {route.terminal ? <KeyboardTabIcon fontSize='small' /> : <ArrowForwardIcon fontSize='small' />}
+            </IconButton>
+          </Fragment>
         }
       />
       <Divider />
