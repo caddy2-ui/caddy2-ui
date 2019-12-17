@@ -29,6 +29,7 @@ export const Route = {
             { $ref: 'http://caddy2-config/app/http/server/handler/subroute' },
             { $ref: 'http://caddy2-config/app/http/server/handler/templates' },
             { $ref: 'http://caddy2-config/app/http/server/handler/vars' },
+            { $ref: 'http://caddy2-config/app/http/server/handler/reverse_proxy' },
           ]
         },
       },
