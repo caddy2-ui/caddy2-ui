@@ -1,7 +1,7 @@
 
 export const Server = {
   uri: 'http://caddy2-config/app/http/server',
-  fileMatch: ['caddy2-edit:/config/app/http/server/*.json'],
+  fileMatch: ['caddy2-edit:/config/app/http/server/config.json'],
   schema: {
     type: 'object',
     properties: {

@@ -1,7 +1,7 @@
 
 export const RegexpMatcher = {
   uri: 'http://caddy2-config/app/http/server/matcher-regexp',
-  fileMatch: ['caddy2-edit:/config/app/http/server/matcher-regexp/*.json'],
+  fileMatch: ['caddy2-edit:/config/app/http/server/matcher-regexp/config.json'],
   schema: {
     type: 'object',
     properties: {
@@ -17,7 +17,7 @@ export const RegexpMatcher = {
 
 export const Matcher = {
   uri: 'http://caddy2-config/app/http/server/matcher',
-  fileMatch: ['caddy2-edit:/config/app/http/server/matcher/*.json'],
+  fileMatch: ['caddy2-edit:/config/app/http/server/matcher/config.json'],
   schema: {
     type: 'object',
     properties: {

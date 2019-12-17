@@ -1,7 +1,7 @@
 
 export const ReverseProxy = {
   uri: 'http://caddy2-config/app/http/server/handler/reverse_proxy',
-  fileMatch: ['caddy2-edit:/config/app/http/server/handler/reverse_proxy/*.json'],
+  fileMatch: ['caddy2-edit:/config/app/http/server/handler/reverse_proxy/config.json'],
   schema: {
     type: 'object',
     properties: {

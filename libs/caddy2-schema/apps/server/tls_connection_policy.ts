@@ -1,7 +1,7 @@
 
 export const TLSConnectionPolicy = {
   uri: 'http://caddy2-config/app/http/server/tls_connection_policy',
-  fileMatch: ['caddy2-edit:/config/app/http/server/tls_connection_policy/*.json'],
+  fileMatch: ['caddy2-edit:/config/app/http/server/tls_connection_policy/config.json'],
   schema: {
     type: 'object',
     properties: {

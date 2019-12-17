@@ -1,7 +1,7 @@
 
 export const StaticResponse = {
   uri: 'http://caddy2-config/app/http/server/handler/static_response',
-  fileMatch: ['caddy2-edit:/config/app/http/server/handler/static_response/*.json'],
+  fileMatch: ['caddy2-edit:/config/app/http/server/handler/static_response/config.json'],
   schema: {
     type: 'object',
     properties: {

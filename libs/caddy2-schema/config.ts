@@ -1,7 +1,7 @@
 
 export const Config = {
   uri: 'http://caddy2-config/config',
-  fileMatch: ['caddy2-edit:/config/*.json'],
+  fileMatch: ['caddy2-edit:/config/config.json'],
   schema: {
     type: 'object',
     properties: {

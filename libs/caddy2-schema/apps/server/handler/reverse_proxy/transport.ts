@@ -1,7 +1,7 @@
 
 export const HTTPTransport = {
   uri: 'http://caddy2-config/app/http/server/handler/reverse_proxy/http_transport',
-  fileMatch: ['caddy2-edit:/config/app/http/server/handler/reverse_proxy/http_transport/*.json'],
+  fileMatch: ['caddy2-edit:/config/app/http/server/handler/reverse_proxy/http_transport/config.json'],
   schema: {
     type: 'object',
     properties: {
@@ -44,7 +44,7 @@ export const HTTPTransport = {
 
 export const FastCGITransport = {
   uri: 'http://caddy2-config/app/http/server/handler/reverse_proxy/fastcgi_transport',
-  fileMatch: ['caddy2-edit:/config/app/http/server/handler/reverse_proxy/fastcgi_transport/*.json'],
+  fileMatch: ['caddy2-edit:/config/app/http/server/handler/reverse_proxy/fastcgi_transport/config.json'],
   schema: {
     type: 'object',
     properties: {

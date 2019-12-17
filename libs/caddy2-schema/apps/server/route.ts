@@ -1,7 +1,7 @@
 
 export const Route = {
   uri: 'http://caddy2-config/app/http/server/route',
-  fileMatch: ['caddy2-edit:/config/app/http/server/route/*.json'],
+  fileMatch: ['caddy2-edit:/config/app/http/server/route/config.json'],
   schema: {
     type: 'object',
     properties: {

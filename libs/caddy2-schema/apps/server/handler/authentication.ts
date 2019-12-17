@@ -1,7 +1,7 @@
 
 export const Authentication = {
   uri: 'http://caddy2-config/app/http/server/handler/authentication',
-  fileMatch: ['caddy2-edit:/config/app/http/server/handler/authentication/*.json'],
+  fileMatch: ['caddy2-edit:/config/app/http/server/handler/authentication/config.json'],
   schema: {
     type: 'object',
     properties: {

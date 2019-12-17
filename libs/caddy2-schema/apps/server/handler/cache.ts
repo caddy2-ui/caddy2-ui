@@ -1,7 +1,7 @@
 
 export const Cache = {
   uri: 'http://caddy2-config/app/http/server/handler/cache',
-  fileMatch: ['caddy2-edit:/config/app/http/server/handler/cache/*.json'],
+  fileMatch: ['caddy2-edit:/config/app/http/server/handler/cache/config.json'],
   schema: {
     type: 'object',
     properties: {

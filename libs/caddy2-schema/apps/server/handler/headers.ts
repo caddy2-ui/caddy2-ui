@@ -1,7 +1,7 @@
 
 export const SetHeaders = {
   uri: 'http://caddy2-config/app/http/server/handler/headers/set-headers',
-  fileMatch: ['caddy2-edit:/config/app/http/server/handler/headers/set-headers/*.json'],
+  fileMatch: ['caddy2-edit:/config/app/http/server/handler/headers/set-headers/config.json'],
   schema: {
     type: 'object',
     patternProperties: {
@@ -15,7 +15,7 @@ export const SetHeaders = {
 
 export const DeleteHeaders = {
   uri: 'http://caddy2-config/app/http/server/handler/headers/delete-headers',
-  fileMatch: ['caddy2-edit:/config/app/http/server/handler/headers/delete-headers/*.json'],
+  fileMatch: ['caddy2-edit:/config/app/http/server/handler/headers/delete-headers/config.json'],
   schema: {
     type: 'array',
     items: { type: 'string' },
@@ -24,7 +24,7 @@ export const DeleteHeaders = {
 
 export const ReplaceHeaders = {
   uri: 'http://caddy2-config/app/http/server/handler/headers/replace-headers',
-  fileMatch: ['caddy2-edit:/config/app/http/server/handler/headers/replace-headers/*.json'],
+  fileMatch: ['caddy2-edit:/config/app/http/server/handler/headers/replace-headers/config.json'],
   schema: {
     type: 'object',
     patternProperties: {
@@ -45,7 +45,7 @@ export const ReplaceHeaders = {
 
 export const Headers = {
   uri: 'http://caddy2-config/app/http/server/handler/headers',
-  fileMatch: ['caddy2-edit:/config/app/http/server/handler/headers/*.json'],
+  fileMatch: ['caddy2-edit:/config/app/http/server/handler/headers/config.json'],
   schema: {
     type: 'object',
     properties: {
