@@ -6,12 +6,7 @@ import {
   Container,
   Grid,
 } from "@material-ui/core";
-import dynamic from "next/dynamic";
-
-const DynamicEditorWithNoSSR = dynamic(
-  () => import('./editor'),
-  { ssr: false }
-)
+import { NoSsrEditor } from "./NoSsrEditor";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -29,7 +24,7 @@ export default () => {
   return (
     <MainLayout>
       <Container className={classes.root} maxWidth={false}>
-        <DynamicEditorWithNoSSR config={config} />
+        <NoSsrEditor config={config} />
       </Container>
     </MainLayout>
   )

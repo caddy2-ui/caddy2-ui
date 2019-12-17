@@ -5,6 +5,11 @@ import { useMediaQuery } from '@material-ui/core';
 
 import { Sidebar, Topbar, Footer } from './components';
 
+import dynamic from "next/dynamic";
+const NoSSREditorDialog = dynamic(() => import('~pages/editor/EditorDialog'), { ssr: false })
+import { editorDialogState } from "~pages/editor/EditorDialog/state";
+
+
 const useStyles = makeStyles(theme => ({
   root: {
     paddingTop: 56,
@@ -55,6 +60,9 @@ export const Main: React.StatelessComponent<{}> = props => {
         open={shouldOpenSidebar}
         variant={isDesktop ? 'persistent' : 'temporary'}
       />
+      <editorDialogState.Provider>
+        <NoSSREditorDialog />
+      </editorDialogState.Provider>
       <main className={classes.content}>
         {children}
       </main>

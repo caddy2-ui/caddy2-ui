@@ -12,10 +12,11 @@ const useStyles = makeStyles(theme => ({
 
 export interface Props {
   schema?: string,
+  id?:string,
   config: any,
 }
 
-export const Editor: React.StatelessComponent<Props> = ({ config, schema = 'http://caddy2-config/config' }) => {
+export const Editor: React.StatelessComponent<Props> = ({ config, schema = 'http://caddy2-config/config', id='tmp.json' }) => {
 
   const classes = useStyles(useTheme())
 
@@ -26,7 +27,7 @@ export const Editor: React.StatelessComponent<Props> = ({ config, schema = 'http
     }
 
     let val = JSON.stringify(config, null, 2)
-    let modelUri = monaco.Uri.parse('caddy2-edit:/config/tmp.json')
+    let modelUri = monaco.Uri.parse(`caddy2-edit:/config/${id}`)
     let model = monaco.editor.createModel(val, `json`, modelUri)
 
     monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
