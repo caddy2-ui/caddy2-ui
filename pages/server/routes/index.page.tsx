@@ -1,30 +1,22 @@
-import React, { } from "react";
+import React, { useState, useEffect } from "react";
 import { caddy2Config } from "~libs/browser/caddy2";
 import { getServer } from "../index";
 import { useRouter } from "next/router";
-import { Main as MainLayout } from "~pages/layouts";
 import { ContentLayout } from "../components/ContentLayout";
-import { makeStyles, useTheme } from "@material-ui/core";
 import {
-  Container,
   Card,
   CardHeader,
   CardContent,
   Divider,
   Grid,
-  List,
-  ListItem,
-  ListItemText,
-  CardActions,
   Button,
+  Tooltip,
 } from "@material-ui/core";
-import { Listen } from "../components/Listen";
-import { AutoHTTPS } from "../components/AutoHTTPS";
-import { ServerOptions } from "../components/ServerOptions";
-import { Logs } from "../components/Logs";
 import Head from "next/head";
 import { RouteCard } from "./route";
+import { useDrag, useDrop } from "react-dnd";
 
+import { makeStyles, useTheme } from "@material-ui/core";
 const useStyles = makeStyles(theme => ({
   root: {
     paddingTop: theme.spacing(3),
@@ -32,7 +24,15 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default () => {
+const ItemType = {
+  Server: 'server'
+}
+type DragItem = { type: string, id: number, route: Route }
+import sum from "hash-sum";
+import copy from "fast-copy";
+const route2DragItem = (route: Route, id: number): DragItem => ({ type: ItemType.Server, route, id, })
+
+const RoutesPage = () => {
 
   const classes = useStyles(useTheme())
   const router = useRouter()
@@ -40,6 +40,11 @@ export default () => {
   const [config] = caddy2Config.useContainer()
   const server = getServer(config, name)
   const { routes = [] } = server
+  const [displayRoutes, setDisplayRoutes] = useState<DragItem[]>(routes.map(route2DragItem))
+  useEffect(() => {
+    setDisplayRoutes(routes.map(route2DragItem))
+  }, [sum(routes)])
+  const hasNewOrder = sum(routes) !== sum(displayRoutes.map(i => i.route))
 
   return (
     <ContentLayout>
@@ -47,25 +52,67 @@ export default () => {
         <title>路由</title>
       </Head>
       <Card>
-        <CardHeader title={"路由配置"} />
+        <CardHeader
+          title={"路由配置"}
+          action={(
+            <Tooltip title={'排序有变化是否保存新的 Route 排序?'} style={{ visibility: hasNewOrder ? 'visible' : 'hidden' }}>
+              <Button color='primary' variant='contained'>保存排序</Button>
+            </Tooltip>
+          )}
+        />
         <Divider />
         <CardContent>
           <Grid container spacing={3}>
             {
-              routes.map((route, id) => (
-                <Grid item key={id}
-                  lg={6}
-                  md={6}
-                  xl={4}
-                  xs={12}
-                >
-                  <RouteCard route={route} id={id} />
-                </Grid>
-              ))
+              displayRoutes.map((item, id) => {
+                const [, drop] = useDrop<DragItem, void, any>({
+                  accept: ItemType.Server,
+                  drop: (dragItem) => { },
+                  hover: (dragItem) => { // hover finish drop work
+                    if (dragItem.id === item.id) {
+                      return
+                    }
+                    let newDisplayRoutes = copy(displayRoutes).filter(i => i.id !== dragItem.id)
+                    newDisplayRoutes.splice(id, 0, dragItem)
+                    setDisplayRoutes(newDisplayRoutes)
+                  },
+                })
+                const [, drag] = useDrag({
+                  item: item,
+                  end: () => {
+                    // setDisplayRoutes(routes.map(route2DragItem))
+                  }
+                })
+                return (
+                  <Grid item key={item.id}
+                    ref={drop}
+                    lg={6}
+                    md={6}
+                    xl={4}
+                    xs={12}
+                  >
+                    <div ref={drag}>
+                      <RouteCard route={item.route} id={item.id} />
+                    </div>
+                  </Grid>
+                )
+              })
             }
           </Grid>
         </CardContent>
       </Card>
     </ContentLayout>
+  )
+}
+
+import { DndProvider } from "react-dnd";
+import Backend from 'react-dnd-html5-backend'
+import { Route } from "~libs/caddy/Route";
+
+export default () => {
+  return (
+    <DndProvider backend={Backend}>
+      <RoutesPage />
+    </DndProvider>
   )
 }

@@ -48,8 +48,11 @@
     "@types/node": "^12.12.14",
     "@types/react": "^16.9.13",
     "fast-copy": "^2.0.4",
+    "hash-sum": "^2.0.0",
     "jest": "^24.9.0",
     "monaco-editor": "^0.18.1",
+    "react-dnd": "^10.0.2",
+    "react-dnd-html5-backend": "^10.0.2",
     "typescript": "^3.7.2",
     "unstated-next": "^1.1.0"
   }

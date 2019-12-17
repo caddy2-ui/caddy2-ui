@@ -50,7 +50,7 @@ export const RouteCard: React.StatelessComponent<Props> = ({ route, id }) => {
   const title = 'Route-' + id + (route.group ? ` : ${route.group}` : '')
   const { match = [], handle = [] } = route
   return (
-    <Card draggable>
+    <Card>
       <CardHeader
         title={title}
         action={
