@@ -15,6 +15,7 @@ import {
 import Head from "next/head";
 import { RouteCard } from "./route";
 import { useDrag, useDrop } from "react-dnd";
+import { useUpdateServerOptions } from '../updateServerOptions'
 
 import { makeStyles, useTheme } from "@material-ui/core";
 const useStyles = makeStyles(theme => ({
@@ -44,7 +45,10 @@ const RoutesPage = () => {
   useEffect(() => {
     setDisplayRoutes(routes.map(route2DragItem))
   }, [sum(routes)])
-  const hasNewOrder = sum(routes) !== sum(displayRoutes.map(i => i.route))
+  const newRoutes = displayRoutes.map(i => i.route)
+  const hasNewOrder = sum(routes) !== sum(newRoutes)
+  
+  const options = useUpdateServerOptions()
 
   return (
     <ContentLayout>
@@ -56,7 +60,7 @@ const RoutesPage = () => {
           title={"路由配置"}
           action={(
             <Tooltip title={'排序有变化是否保存新的 Route 排序?'} style={{ visibility: hasNewOrder ? 'visible' : 'hidden' }}>
-              <Button color='primary' variant='contained'>保存排序</Button>
+              <Button color='primary' variant='contained' onClick={()=>options.updateRoutesOrder(newRoutes)}>保存排序</Button>
             </Tooltip>
           )}
         />

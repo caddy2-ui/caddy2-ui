@@ -2,6 +2,7 @@ import { Action } from "~libs/browser/api-client";
 import { useUpdateServer } from "./index";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
+import { RouteList } from "~libs/caddy/Route";
 
 export const useUpdateServerOptions = () => {
   const router = useRouter()
@@ -37,5 +38,11 @@ export const useUpdateServerOptions = () => {
         Action.POST, '/automatic_https/ignore_loaded_certificates', value
       )
     },
+    updateRoutesOrder: async (routes: RouteList) => {
+      return update(
+        (server, routes) => (server.routes = routes, server),
+        Action.PATCH, '/routes', routes,
+      )
+    }
   }), [update])
 }
