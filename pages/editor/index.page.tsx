@@ -24,7 +24,7 @@ export default () => {
   return (
     <MainLayout>
       <Container className={classes.root} maxWidth={false}>
-        <NoSsrEditor config={config} />
+        <NoSsrEditor config={JSON.stringify(config, null, 2)} />
       </Container>
     </MainLayout>
   )

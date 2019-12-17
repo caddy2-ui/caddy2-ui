@@ -1,4 +1,4 @@
-import React, { } from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogActions,
@@ -16,6 +16,7 @@ export interface Props {
 export const EditorDialog: React.StatelessComponent<Props> = (props) => {
 
   const editor = useEditor()
+  const [ tmpValue, setValue ] = useState()
 
   return (
     <Dialog
@@ -25,11 +26,11 @@ export const EditorDialog: React.StatelessComponent<Props> = (props) => {
     >
       <DialogTitle>修改配置</DialogTitle>
       <DialogContent style={{ height: '75vh' }}>
-        <NoSsrEditor config={{}} id='dialog.json' />
+        <NoSsrEditor config={editor.state.value} file='/config/dialog.json' />
       </DialogContent>
       <DialogActions>
         <Button onClick={() => editor.close()}>取消</Button>
-        <Button variant='contained' color='primary'>保存</Button>
+        <Button onClick={() => editor.save()} variant='contained' color='primary'>保存</Button>
       </DialogActions>
     </Dialog>
   )

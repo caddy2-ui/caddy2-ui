@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import *as monaco from "monaco-editor";
-import { schmea } from "./schema";
+import "./editor-settings";
 import { makeStyles, useTheme, colors } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
@@ -12,11 +12,16 @@ const useStyles = makeStyles(theme => ({
 
 export interface Props {
   schema?: string,
-  id?:string,
-  config: any,
+  file?: string,
+  config: string,
+  onChange?: (e: monaco.editor.IModelContentChangedEvent, value: string) => void
 }
 
-export const Editor: React.StatelessComponent<Props> = ({ config, schema = 'http://caddy2-config/config', id='tmp.json' }) => {
+export const Editor: React.StatelessComponent<Props> = ({
+  config,
+  file = '/config/tmp.json',
+  onChange = () => 0,
+}) => {
 
   const classes = useStyles(useTheme())
 
@@ -26,21 +31,15 @@ export const Editor: React.StatelessComponent<Props> = ({ config, schema = 'http
       return
     }
 
-    let val = JSON.stringify(config, null, 2)
-    let modelUri = monaco.Uri.parse(`caddy2-edit:/config/${id}`)
-    let model = monaco.editor.createModel(val, `json`, modelUri)
-
-    monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-      validate: true,
-      schemas: [
-        {
-          uri: 'http://caddy2-config/config-edit',
-          fileMatch: [modelUri.toString()],
-          schema: { $ref: schema, }
-        },
-        ...schmea.schemas,
-      ],
+    let modelUri = monaco.Uri.parse(`caddy2-edit:${file}`)
+    let model = monaco.editor.createModel(config, `json`, modelUri)
+    model.updateOptions({
+      tabSize: 2,
     })
+    model.onDidChangeContent(e => {
+      onChange(e, model.getValue())
+    })
+
     const editor = monaco.editor.create(
       f.current,
       {
@@ -49,6 +48,10 @@ export const Editor: React.StatelessComponent<Props> = ({ config, schema = 'http
         wordWrap: 'on',
       },
     )
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S, () => {
+      // do nothing, just hook browser save
+    })
+
     return () => {
       editor.dispose()
       model.dispose()
