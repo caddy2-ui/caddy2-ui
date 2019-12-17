@@ -55,8 +55,8 @@ export const MatcherRow: React.StatelessComponent<MatchRowProps> = ({
   const openEditor = () => {
     editor.open(
       {
-        config: { match: [item.matcher], },
-        file: '/config/app/http/server/route/config.json'
+        config: item.matcher,
+        file: '/config/app/http/server/matcher/config.json'
       },
       (config) => {
         console.log(config)
