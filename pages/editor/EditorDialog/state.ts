@@ -11,7 +11,7 @@ interface State {
 
 export const useEditorDialogState = () => {
   return useState<State>({
-    open: true,
+    open: false,
     value: '',
     file: '/config/dialog.json',
     onSave: () => new Promise(rl => setTimeout(rl, 5e3)),
