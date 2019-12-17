@@ -1,6 +1,7 @@
 
 export const AutomaticHTTPS = {
   uri: 'http://caddy2-config/app/http/server/automatic_https',
+  fileMatch: ['caddy2-edit:/config/app/http/server/automatic_https/*.json'],
   schema: {
     type: 'object',
     properties: {

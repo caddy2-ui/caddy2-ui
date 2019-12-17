@@ -1,6 +1,7 @@
 
 export const FileServer = {
   uri: 'http://caddy2-config/app/http/server/handler/file_server',
+  fileMatch: ['caddy2-edit:/config/app/http/server/handler/file_server/*.json'],
   schema: {
     type: 'object',
     properties: {

@@ -1,6 +1,7 @@
 
 export const Subroute = {
   uri: 'http://caddy2-config/app/http/server/handler/subroute',
+  fileMatch: ['caddy2-edit:/config/app/http/server/handler/subroute/*.json'],
   schema: {
     type: 'object',
     properties: {

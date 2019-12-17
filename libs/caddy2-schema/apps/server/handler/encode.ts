@@ -1,6 +1,7 @@
 
 export const Encode = {
   uri: 'http://caddy2-config/app/http/server/handler/encode',
+  fileMatch: ['caddy2-edit:/config/app/http/server/handler/encode/*.json'],
   schema: {
     type: 'object',
     properties: {

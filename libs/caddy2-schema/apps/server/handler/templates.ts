@@ -1,6 +1,7 @@
 
 export const Templates = {
   uri: 'http://caddy2-config/app/http/server/handler/templates',
+  fileMatch: ['caddy2-edit:/config/app/http/server/handler/templates/*.json'],
   schema: {
     type: 'object',
     properties: {
