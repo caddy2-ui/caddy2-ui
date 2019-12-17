@@ -20,7 +20,7 @@ export interface Props {
 
 export const Editor: React.StatelessComponent<Props> = ({
   config,
-  file = '/config/tmp.json',
+  file = '/config/dialog.json',
   onChange = () => 0,
   readonly: editorReadonly = false,
   showMarkerSign = 0,

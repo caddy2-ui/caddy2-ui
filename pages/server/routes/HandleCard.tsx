@@ -50,10 +50,12 @@ export const HandleCard: React.StatelessComponent<Props> = ({ handlers }) => {
   }
   const openHandlerEditor = (id: number) => {
     let handler = handlers[id]
+    const f = `/config/app/http/server/handler/${handler.handler}/config.json`
+    console.log(f)
     editor.open(
       {
         config: handler,
-        file: `/config/app/http/server/handler/${handler.handler}/config.json`
+        file: f
       },
       (config) => {
         console.log(config)
