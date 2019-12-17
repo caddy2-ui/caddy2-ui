@@ -26,9 +26,9 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const ItemType = {
-  Server: 'server'
+  Server: Symbol('server')
 }
-type DragItem = { type: string, id: number, route: Route }
+type DragItem = { type: symbol, id: number, route: Route }
 import sum from "hash-sum";
 import copy from "fast-copy";
 const route2DragItem = (route: Route, id: number): DragItem => ({ type: ItemType.Server, route, id, })
@@ -47,7 +47,7 @@ const RoutesPage = () => {
   }, [sum(routes)])
   const newRoutes = displayRoutes.map(i => i.route)
   const hasNewOrder = sum(routes) !== sum(newRoutes)
-  
+
   const options = useUpdateServerOptions()
 
   return (
@@ -60,7 +60,7 @@ const RoutesPage = () => {
           title={"路由配置"}
           action={(
             <Tooltip title={'排序有变化是否保存新的 Route 排序?'} style={{ visibility: hasNewOrder ? 'visible' : 'hidden' }}>
-              <Button color='primary' variant='contained' onClick={()=>options.updateRoutesOrder(newRoutes)}>保存排序</Button>
+              <Button color='primary' variant='contained' onClick={() => options.updateRoutesOrder(newRoutes)}>保存排序</Button>
             </Tooltip>
           )}
         />

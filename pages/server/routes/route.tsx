@@ -44,11 +44,11 @@ export const RouteCard: React.StatelessComponent<Props> = ({ route, id }) => {
         <Grid container direction='column' spacing={3}>
           {match.length === 0 ? null : (
             <Grid item>
-              <MatchCard match={match} />
+              <MatchCard matchers={match} />
             </Grid>
           )}
           <Grid item>
-            <HandleCard handle={handle} />
+            <HandleCard handlers={handle} />
           </Grid>
         </Grid>
       </CardContent>

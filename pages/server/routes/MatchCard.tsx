@@ -7,11 +7,20 @@ import {
   Typography,
   IconButton,
 } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import EditIcon from '@material-ui/icons/Edit';
 import { MatcherSpan } from "./MatcherSpan";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import { Matcher } from "~libs/caddy/Route";
+
+import { useDrag, useDrop } from "react-dnd";
+const ItemType = {
+  Matcher: Symbol('matcher')
+}
+type DragItem = { type: symbol, id: number, matcher: Matcher }
+import sum from "hash-sum";
+import copy from "fast-copy";
+const route2DragItem = (matcher: Matcher, id: number): DragItem => ({ type: ItemType.Matcher, matcher, id, })
 
 import { makeStyles, useTheme } from "@material-ui/core";
 
@@ -23,11 +32,19 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export interface Props {
-  match: Matcher[]
+  matchers: Matcher[]
 }
 
-export const MatchCard: React.StatelessComponent<Props> = ({ match }) => {
+export const MatchCard: React.StatelessComponent<Props> = ({ matchers }) => {
   const classes = useStyles(useTheme())
+
+  const [displayMatchers, setDisplayMatchers] = useState<DragItem[]>(matchers.map(route2DragItem))
+  useEffect(() => {
+    setDisplayMatchers(matchers.map(route2DragItem))
+  }, [sum(matchers)])
+  const nowMatchers = displayMatchers.map(i => i.matcher)
+  const hasNewOrder = sum(matchers) !== sum(nowMatchers)
+
   return (
     <Table cellSpacing={0} size='small'>
       <TableHead>
@@ -41,18 +58,38 @@ export const MatchCard: React.StatelessComponent<Props> = ({ match }) => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {match.map((matcher, id) => (
-          <TableRow hover className={classes.item} key={id}>
-            <TableCell>
-              <MatcherSpan matcher={matcher}></MatcherSpan>
-            </TableCell>
-            <TableCell style={{ width: 44 }} padding='none'>
-              <IconButton>
-                <ArrowDownwardIcon fontSize='small' />
-              </IconButton>
-            </TableCell>
-          </TableRow>
-        ))}
+        {displayMatchers.map((item, id) => {
+          const [, drop] = useDrop<DragItem, void, any>({
+            accept: ItemType.Matcher,
+            drop: (dragItem) => { },
+            hover: (dragItem) => { // hover finish drop work
+              if (dragItem.id === item.id) {
+                return
+              }
+              let newDisplayRoutes = copy(displayMatchers).filter(i => i.id !== dragItem.id)
+              newDisplayRoutes.splice(id, 0, dragItem)
+              setDisplayMatchers(newDisplayRoutes)
+            },
+          })
+          const [, drag] = useDrag({
+            item: item,
+            end: () => {
+              // setDisplayRoutes(routes.map(route2DragItem))
+            }
+          })
+          return (
+            <TableRow hover ref={drag} className={classes.item} key={id}>
+              <TableCell ref={drop}>
+                <MatcherSpan matcher={item.matcher}></MatcherSpan>
+              </TableCell>
+              <TableCell style={{ width: 44 }} padding='none'>
+                <IconButton>
+                  <ArrowDownwardIcon fontSize='small' />
+                </IconButton>
+              </TableCell>
+            </TableRow>
+          )
+        })}
       </TableBody>
     </Table>
   )
