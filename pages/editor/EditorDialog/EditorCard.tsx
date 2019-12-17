@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardContent,
   CardActions,
+  Tooltip,
 } from "@material-ui/core";
 import { NoSsrEditor } from "../NoSsrEditor";
 import { useEditor } from "./useEditor";
@@ -32,15 +33,20 @@ export const EditorCard: React.StatelessComponent<Props> = (props) => {
   const file = props.file || editor.state.file
 
   const [value, setValue] = useState(config)
-  const [markers, setMarkers] = useState<editor.IMarker[]>([])
+  const [hasMarker, setHasMarker] = useState(false)
+  const [showMarkerSign, setShowMarkerSign] = useState(0)
   const checkMarkers = async (delay = 500) => {
     const monaco = await import('monaco-editor')
     await new Promise(rl => setTimeout(rl, delay))
-    let markers = monaco.editor.getModelMarkers({
+    let markersLength = monaco.editor.getModelMarkers({
       resource: monaco.Uri.parse('caddy2-edit:' + editor.state.file),
-    })
-    setMarkers(markers)
-    return markers
+    }).length
+    let hasMarker = markersLength !== 0
+    setHasMarker(hasMarker)
+    if (!hasMarker) {
+      setShowMarkerSign(0)
+    }
+    return markersLength
   }
   const handleChange = (e: any, value: string) => {
     setValue(value)
@@ -48,7 +54,8 @@ export const EditorCard: React.StatelessComponent<Props> = (props) => {
   }
   const onSave = async () => {
     let markers = await checkMarkers(0)
-    if (markers.length) {
+    if (markers !== 0) {
+      setShowMarkerSign(showMarkerSign + 1)
       return
     }
     editor.save(value)
@@ -58,7 +65,7 @@ export const EditorCard: React.StatelessComponent<Props> = (props) => {
     <Card>
       <CardHeader title={`修改配置 ${editor.state.posting && '(保存中...)' || ''}`}></CardHeader>
       <CardContent style={{ height: '75vh' }}>
-        <NoSsrEditor onChange={handleChange} config={config} file={file} readonly={editor.state.posting} />
+        <NoSsrEditor onChange={handleChange} config={config} file={file} readonly={editor.state.posting} showMarkerSign={showMarkerSign} />
       </CardContent>
       <CardActions className={classes.actions}>
         <Button
@@ -67,15 +74,17 @@ export const EditorCard: React.StatelessComponent<Props> = (props) => {
         >
           取消
         </Button>
-        <Button
-          disabled={markers.length !== 0 || editor.state.posting}
-          onClick={() => onSave()}
-          variant='contained'
-          color='primary'
-          endIcon={editor.state.posting && <CircularProgress color='inherit' size={16} />}
-        >
-          提交
-        </Button>
+        <Tooltip title={hasMarker ? '配置中含有错误, 点击查看' : ''} placement='top-end' arrow>
+          <Button
+            disabled={editor.state.posting}
+            onClick={() => onSave()}
+            variant='contained'
+            color={hasMarker ? 'secondary' : 'primary'}
+            endIcon={editor.state.posting && <CircularProgress color='inherit' size={16} />}
+          >
+            提交
+          </Button>
+        </Tooltip>
       </CardActions>
     </Card>
   )

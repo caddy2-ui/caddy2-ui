@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react'
 import *as monaco from "monaco-editor";
 import "./editor-settings";
-import { makeStyles, useTheme, colors } from "@material-ui/core";
+import { makeStyles, useTheme } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -15,13 +15,15 @@ export interface Props {
   file?: string,
   onChange?: (e: monaco.editor.IModelContentChangedEvent, value: string) => void
   readonly?: boolean,
+  showMarkerSign?: number,
 }
 
 export const Editor: React.StatelessComponent<Props> = ({
   config,
   file = '/config/tmp.json',
   onChange = () => 0,
-  readonly: editorReadonly = false
+  readonly: editorReadonly = false,
+  showMarkerSign = 0,
 }) => {
 
   const classes = useStyles(useTheme())
@@ -36,6 +38,18 @@ export const Editor: React.StatelessComponent<Props> = ({
       readOnly: editorReadonly,
     })
   }, [editorReadonly])
+
+  useEffect(() => {
+    if (!editor) {
+      return
+    }
+    if (!showMarkerSign) {
+      return
+    }
+    editor.getAction('editor.action.marker.nextInFiles').run().then(() => {
+      editor.focus()
+    })
+  }, [showMarkerSign])
 
   const f = useRef()
   useEffect(() => {
