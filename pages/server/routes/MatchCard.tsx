@@ -12,6 +12,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import { MatcherSpan } from "./MatcherSpan";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import { Matcher } from "~libs/caddy/Route";
+import { useEditor } from "~pages/editor";
 
 import { useDrag, useDrop } from "react-dnd";
 const ItemType = {
@@ -49,6 +50,21 @@ export const MatcherRow: React.StatelessComponent<MatchRowProps> = ({
   displayMatchers,
   setDisplayMatchers,
 }) => {
+
+  const editor = useEditor()
+  const openEditor = () => {
+    editor.open(
+      {
+        config: { match: [item.matcher], },
+        file: '/config/app/http/server/route/config.json'
+      },
+      (config) => {
+        console.log(config)
+        editor.close()
+      },
+    )
+  }
+
   const [, drop] = useDrop<DragItem, void, any>({
     accept: ItemType,
     drop: (dragItem) => { },
@@ -72,7 +88,12 @@ export const MatcherRow: React.StatelessComponent<MatchRowProps> = ({
       <TableCell ref={drop}>
         <MatcherSpan matcher={item.matcher}></MatcherSpan>
       </TableCell>
-      <TableCell style={{ width: 44 }} padding='none'>
+      <TableCell padding='none'>
+        <IconButton onClick={openEditor}>
+          <EditIcon fontSize='small' />
+        </IconButton>
+      </TableCell>
+      <TableCell padding='none'>
         <IconButton>
           <ArrowDownwardIcon fontSize='small' />
         </IconButton>
@@ -83,6 +104,20 @@ export const MatcherRow: React.StatelessComponent<MatchRowProps> = ({
 
 export const MatchCard: React.StatelessComponent<Props> = ({ matchers }) => {
   const classes = useStyles(useTheme())
+
+  const editor = useEditor()
+  const openEditor = () => {
+    editor.open(
+      {
+        config: { match: matchers, },
+        file: '/config/app/http/server/route/config.json'
+      },
+      (config) => {
+        console.log(config)
+        editor.close()
+      },
+    )
+  }
 
   const { ItemType, route2DragItem } = useMemo((t = Symbol()) => ({ ItemType: t, route2DragItem: makeRoute2DragItem(t) }), [])
   const [displayMatchers, setDisplayMatchers] = useState<DragItem[]>(matchers.map(route2DragItem))
@@ -99,8 +134,10 @@ export const MatchCard: React.StatelessComponent<Props> = ({ matchers }) => {
           <TableCell>
             <Typography className={classes.card_header} variant='h4'>Matcher</Typography>
           </TableCell>
-          <TableCell padding='none'>
-            <IconButton><EditIcon fontSize='small' /></IconButton>
+          <TableCell style={{ width: 44 }} padding='none'>
+          </TableCell>
+          <TableCell style={{ width: 44 }} padding='none'>
+            <IconButton onClick={openEditor}><EditIcon fontSize='small' /></IconButton>
           </TableCell>
         </TableRow>
       </TableHead>
