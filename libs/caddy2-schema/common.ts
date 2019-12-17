@@ -9,6 +9,15 @@ export const EnvObject = {
   }
 }
 
+export const StringArray = {
+  uri: 'http://caddy2-config/common/string-array',
+  schema: {
+    type: 'array',
+    items: { type: 'string' },
+  }
+}
+
 export const schemas = [
   EnvObject,
+  StringArray,
 ]
