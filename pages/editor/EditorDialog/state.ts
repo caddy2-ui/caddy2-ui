@@ -6,7 +6,7 @@ interface State {
   value: string,
   file: string,
   posting: boolean,
-  onSave: (config: string) => Promise<any>,
+  onSave: (config: any) => Promise<any>,
 }
 
 export const useEditorDialogState = () => {

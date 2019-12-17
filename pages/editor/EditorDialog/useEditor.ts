@@ -7,10 +7,10 @@ export const useEditor = () => {
     let nextState = ((state) => (state.open = false, state))(copy(state))
     setState(nextState)
   }
-  const open = ({ config, file }: { config: string, file: string }, onSave: (config: string) => Promise<any> | any) => {
+  const open = <T>({ config, file }: { config: T, file: string }, onSave: (config: T) => Promise<any> | any) => {
     let nextState = ((state) => (
       state.file = file,
-      state.value = config,
+      state.value = JSON.stringify(config, null, 2),
       state.onSave = onSave,
       state.open = true,
       state
@@ -20,7 +20,7 @@ export const useEditor = () => {
   const save = (value: string) => {
     let nextState = ((state) => (state.posting = true, state))(copy(state))
     setState(nextState)
-    Promise.resolve(state.onSave(value))
+    Promise.resolve(state.onSave(JSON.parse(value)))
       .finally(() => {
         setState(state => ({
           ...state,
