@@ -7,7 +7,7 @@ import {
   Typography,
   IconButton,
 } from "@material-ui/core";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import EditIcon from '@material-ui/icons/Edit';
 import { MatcherSpan } from "./MatcherSpan";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
@@ -20,7 +20,7 @@ const ItemType = {
 type DragItem = { type: symbol, id: number, matcher: Matcher }
 import sum from "hash-sum";
 import copy from "fast-copy";
-const route2DragItem = (matcher: Matcher, id: number): DragItem => ({ type: ItemType.Matcher, matcher, id, })
+const makeRoute2DragItem = (ItemType: symbol) => (matcher: Matcher, id: number): DragItem => ({ type: ItemType, matcher, id, })
 
 import { makeStyles, useTheme } from "@material-ui/core";
 
@@ -38,6 +38,7 @@ export interface Props {
 export const MatchCard: React.StatelessComponent<Props> = ({ matchers }) => {
   const classes = useStyles(useTheme())
 
+  const { ItemType, route2DragItem } = useMemo((t = Symbol()) => ({ ItemType: t, route2DragItem: makeRoute2DragItem(t) }), [])
   const [displayMatchers, setDisplayMatchers] = useState<DragItem[]>(matchers.map(route2DragItem))
   useEffect(() => {
     setDisplayMatchers(matchers.map(route2DragItem))
@@ -60,7 +61,7 @@ export const MatchCard: React.StatelessComponent<Props> = ({ matchers }) => {
       <TableBody>
         {displayMatchers.map((item, id) => {
           const [, drop] = useDrop<DragItem, void, any>({
-            accept: ItemType.Matcher,
+            accept: ItemType,
             drop: (dragItem) => { },
             hover: (dragItem) => { // hover finish drop work
               if (dragItem.id === item.id) {

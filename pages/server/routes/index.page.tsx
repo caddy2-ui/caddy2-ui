@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { caddy2Config } from "~libs/browser/caddy2";
 import { getServer } from "../index";
 import { useRouter } from "next/router";
@@ -25,13 +25,10 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const ItemType = {
-  Server: Symbol('server')
-}
 type DragItem = { type: symbol, id: number, route: Route }
 import sum from "hash-sum";
 import copy from "fast-copy";
-const route2DragItem = (route: Route, id: number): DragItem => ({ type: ItemType.Server, route, id, })
+const makeRoute2DragItem = (ItemType: symbol) => (route: Route, id: number): DragItem => ({ type: ItemType, route, id, })
 
 const RoutesPage = () => {
 
@@ -41,6 +38,8 @@ const RoutesPage = () => {
   const [config] = caddy2Config.useContainer()
   const server = getServer(config, name)
   const { routes = [] } = server
+
+  const { ItemType, route2DragItem } = useMemo((t = Symbol()) => ({ ItemType: t, route2DragItem: makeRoute2DragItem(t) }), [])
   const [displayRoutes, setDisplayRoutes] = useState<DragItem[]>(routes.map(route2DragItem))
   useEffect(() => {
     setDisplayRoutes(routes.map(route2DragItem))
@@ -70,7 +69,7 @@ const RoutesPage = () => {
             {
               displayRoutes.map((item, id) => {
                 const [, drop] = useDrop<DragItem, void, any>({
-                  accept: ItemType.Server,
+                  accept: ItemType,
                   drop: (dragItem) => { },
                   hover: (dragItem) => { // hover finish drop work
                     if (dragItem.id === item.id) {

@@ -7,7 +7,7 @@ import {
   Typography,
   IconButton,
 } from "@material-ui/core";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import EditIcon from '@material-ui/icons/Edit';
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 
@@ -22,13 +22,10 @@ const useStyles = makeStyles(theme => ({
 }))
 
 import { useDrag, useDrop } from "react-dnd";
-const ItemType = {
-  Handler: Symbol('handler')
-}
 type DragItem = { type: symbol, id: number, handler: Handler }
 import sum from "hash-sum";
 import copy from "fast-copy";
-const route2DragItem = (handler: Handler, id: number): DragItem => ({ type: ItemType.Handler, handler, id, })
+const makeRoute2DragItem = (ItemType: symbol) => (handler: Handler, id: number): DragItem => ({ type: ItemType, handler, id, })
 
 export interface Props {
   handlers: Handler[]
@@ -37,6 +34,7 @@ export interface Props {
 export const HandleCard: React.StatelessComponent<Props> = ({ handlers }) => {
   const classes = useStyles(useTheme())
 
+  const { ItemType, route2DragItem } = useMemo((t = Symbol()) => ({ ItemType: t, route2DragItem: makeRoute2DragItem(t) }), [])
   const [displayHandlers, setDisplayHandlers] = useState<DragItem[]>(handlers.map(route2DragItem))
   useEffect(() => {
     setDisplayHandlers(handlers.map(route2DragItem))
@@ -59,7 +57,7 @@ export const HandleCard: React.StatelessComponent<Props> = ({ handlers }) => {
       <TableBody>
         {displayHandlers.map((item, id) => {
           const [, drop] = useDrop<DragItem, void, any>({
-            accept: ItemType.Handler,
+            accept: ItemType,
             drop: (dragItem) => { },
             hover: (dragItem) => { // hover finish drop work
               if (dragItem.id === item.id) {
