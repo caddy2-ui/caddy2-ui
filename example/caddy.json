@@ -73,6 +73,52 @@
               }
             }
           ]
+        },
+        "example-server": {
+          "listen": ["localhost:2021"],
+          "routes": [
+            {
+              "match": [{ "path": ["/caddy2-api"] }],
+              "handle": [
+                { "handler": "rewrite", "strip_path_prefix": "/caddy2-api" },
+                {
+                  "handler": "reverse_proxy",
+                  "upstreams": [{ "dial": "localhost:2019" }]
+                }
+              ],
+              "terminal": true
+            },
+            {
+              "handle": [
+                {
+                  "handler": "reverse_proxy",
+                  "upstreams": [{ "dial": "127.0.0.1:3000" }]
+                }
+              ],
+              "terminal": true
+            },
+            {
+              "group": "test",
+              "match": [
+                {
+                  "protocol": "https",
+                  "host": ["localhost", "127.0.0.1"],
+                  "path": ["/caddy2-api"]
+                },
+                { "host": ["localhost", "127.0.0.1"] }
+              ],
+              "handle": [
+                { "handler": "rewrite", "strip_path_prefix": "/caddy2-api" },
+                {
+                  "handler": "reverse_proxy",
+                  "upstreams": [{ "dial": "localhost:2019" }]
+                }
+              ]
+            }
+          ],
+          "automatic_https": {
+            "disable": true
+          }
         }
       }
     }
