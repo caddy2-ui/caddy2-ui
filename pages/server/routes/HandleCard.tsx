@@ -10,6 +10,7 @@ import {
 import React, { useState, useEffect, useMemo } from "react";
 import EditIcon from '@material-ui/icons/Edit';
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
+import { useEditor } from "~pages/editor";
 
 import { makeStyles, useTheme } from "@material-ui/core";
 import { Handler } from "~libs/caddy/Route/Route";
@@ -34,6 +35,33 @@ export interface Props {
 export const HandleCard: React.StatelessComponent<Props> = ({ handlers }) => {
   const classes = useStyles(useTheme())
 
+  const editor = useEditor()
+  const openEditor = () => {
+    editor.open(
+      {
+        config: { handle: handlers, },
+        file: '/config/app/http/server/route/config.json'
+      },
+      (config) => {
+        console.log(config)
+        editor.close()
+      },
+    )
+  }
+  const openHandlerEditor = (id: number) => {
+    let handler = handlers[id]
+    editor.open(
+      {
+        config: handler,
+        file: `/config/app/http/server/handler/${handler.handler}/config.json`
+      },
+      (config) => {
+        console.log(config)
+        editor.close()
+      },
+    )
+  }
+
   const { ItemType, route2DragItem } = useMemo((t = Symbol()) => ({ ItemType: t, route2DragItem: makeRoute2DragItem(t) }), [])
   const [displayHandlers, setDisplayHandlers] = useState<DragItem[]>(handlers.map(route2DragItem))
   useEffect(() => {
@@ -49,13 +77,16 @@ export const HandleCard: React.StatelessComponent<Props> = ({ handlers }) => {
           <TableCell>
             <Typography className={classes.card_header} variant='h4'>Handler</Typography>
           </TableCell>
-          <TableCell padding='none'>
-            <IconButton><EditIcon fontSize='small' /></IconButton>
+          <TableCell style={{ width: 44 }} padding='none'>
+          </TableCell>
+          <TableCell style={{ width: 44 }} padding='none'>
+            <IconButton onClick={openEditor}><EditIcon fontSize='small' /></IconButton>
           </TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {displayHandlers.map((item, id) => {
+
           const [, drop] = useDrop<DragItem, void, any>({
             accept: ItemType,
             drop: (dragItem) => { },
@@ -79,7 +110,12 @@ export const HandleCard: React.StatelessComponent<Props> = ({ handlers }) => {
               <TableCell ref={drop}>
                 {item.handler.handler}
               </TableCell>
-              <TableCell style={{ width: 44 }} padding='none'>
+              <TableCell padding='none'>
+                <IconButton onClick={() => openHandlerEditor(item.id)}>
+                  <EditIcon fontSize='small' />
+                </IconButton>
+              </TableCell>
+              <TableCell padding='none'>
                 <IconButton>
                   <ArrowDownwardIcon fontSize='small' />
                 </IconButton>
