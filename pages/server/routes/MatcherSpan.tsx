@@ -57,7 +57,7 @@ export const MatcherSpan: React.StatelessComponent<{ matcher: Matcher }> = ({ ma
           .filter(col => col.node !== null)
           .map(({ displayName, node }) => (
             <span key={displayName}>
-              <Tooltip title={displayName}>
+              <Tooltip title={displayName} arrow placement='top-start'>
                 {node}
               </Tooltip>
             </span>
