@@ -50,6 +50,12 @@ export const Main: React.StatelessComponent<Props> = ({ disableEditorDialog = fa
 
   const shouldOpenSidebar = isDesktop ? true : openSidebar;
 
+  const body = (
+    <main className={classes.content}>
+      {children}
+    </main>
+  )
+
   return (
     <div
       className={clsx({
@@ -64,15 +70,15 @@ export const Main: React.StatelessComponent<Props> = ({ disableEditorDialog = fa
         variant={isDesktop ? 'persistent' : 'temporary'}
       />
       {
-        !disableEditorDialog && (
-          <editorDialogState.Provider>
-            <NoSSREditorDialog />
-          </editorDialogState.Provider>
-        )
+        disableEditorDialog
+          ? body
+          : (
+            <editorDialogState.Provider>
+              <NoSSREditorDialog />
+              {body}
+            </editorDialogState.Provider>
+          )
       }
-      <main className={classes.content}>
-        {children}
-      </main>
     </div>
   );
 };
