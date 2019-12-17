@@ -28,11 +28,57 @@ const useStyles = makeStyles(theme => ({
   card_header: {
     paddingBottom: theme.spacing(1),
   },
-  item: {},
 }))
 
 export interface Props {
   matchers: Matcher[]
+}
+
+interface MatchRowProps {
+  ItemType: symbol,
+  item: DragItem,
+  id: number,
+  displayMatchers: any,
+  setDisplayMatchers: any
+}
+
+export const MatcherRow: React.StatelessComponent<MatchRowProps> = ({
+  ItemType,
+  item,
+  id,
+  displayMatchers,
+  setDisplayMatchers,
+}) => {
+  const [, drop] = useDrop<DragItem, void, any>({
+    accept: ItemType,
+    drop: (dragItem) => { },
+    hover: (dragItem) => { // hover finish drop work
+      if (dragItem.id === item.id) {
+        return
+      }
+      let newDisplayRoutes = copy(displayMatchers).filter(i => i.id !== dragItem.id)
+      newDisplayRoutes.splice(id, 0, dragItem)
+      setDisplayMatchers(newDisplayRoutes)
+    },
+  })
+  const [, drag] = useDrag({
+    item: item,
+    end: () => {
+      // setDisplayRoutes(routes.map(route2DragItem))
+    }
+  })
+  return (
+    <TableRow hover ref={drag} key={id}>
+      <TableCell ref={drop}>
+        <MatcherSpan matcher={item.matcher}></MatcherSpan>
+      </TableCell>
+      <TableCell style={{ width: 44 }} padding='none'>
+        <IconButton>
+          <ArrowDownwardIcon fontSize='small' />
+        </IconButton>
+      </TableCell>
+    </TableRow>
+  )
 }
 
 export const MatchCard: React.StatelessComponent<Props> = ({ matchers }) => {
@@ -60,35 +106,14 @@ export const MatchCard: React.StatelessComponent<Props> = ({ matchers }) => {
       </TableHead>
       <TableBody>
         {displayMatchers.map((item, id) => {
-          const [, drop] = useDrop<DragItem, void, any>({
-            accept: ItemType,
-            drop: (dragItem) => { },
-            hover: (dragItem) => { // hover finish drop work
-              if (dragItem.id === item.id) {
-                return
-              }
-              let newDisplayRoutes = copy(displayMatchers).filter(i => i.id !== dragItem.id)
-              newDisplayRoutes.splice(id, 0, dragItem)
-              setDisplayMatchers(newDisplayRoutes)
-            },
-          })
-          const [, drag] = useDrag({
-            item: item,
-            end: () => {
-              // setDisplayRoutes(routes.map(route2DragItem))
-            }
-          })
           return (
-            <TableRow hover ref={drag} className={classes.item} key={id}>
-              <TableCell ref={drop}>
-                <MatcherSpan matcher={item.matcher}></MatcherSpan>
-              </TableCell>
-              <TableCell style={{ width: 44 }} padding='none'>
-                <IconButton>
-                  <ArrowDownwardIcon fontSize='small' />
-                </IconButton>
-              </TableCell>
-            </TableRow>
+            <MatcherRow key={item.id} {...{
+              ItemType,
+              item,
+              id,
+              displayMatchers,
+              setDisplayMatchers,
+            }} />
           )
         })}
       </TableBody>
