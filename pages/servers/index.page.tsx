@@ -22,7 +22,7 @@ export default () => {
   return (
     <MainLayout>
       <div className={classes.root}>
-        <Grid container>
+        <Grid container spacing={3}>
           {Object.keys(servers).map((k) => (
             <Grid item key={k}
               lg={4}
