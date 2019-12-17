@@ -9,6 +9,7 @@ import {
   TableRow,
   TableCell,
   Typography,
+  Divider,
 } from "@material-ui/core";
 import React from "react";
 import { Server } from "../index";
@@ -22,6 +23,7 @@ export const Logs: React.StatelessComponent<Props> = ({ config }) => {
   return (
     <Card>
       <CardHeader title={'Logs'}></CardHeader>
+      <Divider />
       <CardContent>
         <Table size='small'>
           <TableHead>

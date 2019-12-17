@@ -41,6 +41,7 @@ export const AutoHTTPS: React.StatelessComponent<Props> = ({ config }) => {
   return (
     <Card>
       <CardHeader title={'HTTPS 自动续签配置'}></CardHeader>
+      <Divider />
       <CardContent>
         <List>
           <ListItem>

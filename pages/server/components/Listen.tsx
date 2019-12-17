@@ -47,7 +47,8 @@ export const Listen: React.StatelessComponent<Props> = (props) => {
             <EditIcon />
           </IconButton>
         }
-      ></CardHeader>
+      />
+      <Divider />
       <CardContent>
         <List>
           {props.listen.map((addr) => (

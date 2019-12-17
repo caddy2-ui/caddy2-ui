@@ -57,6 +57,7 @@ export const ServerOptions: React.StatelessComponent<Props> = ({ server, name })
   return (
     <Card>
       <CardHeader title={'服务配置'}></CardHeader>
+      <Divider />
       <CardContent>
         <List>
           {Items.map((item) => (

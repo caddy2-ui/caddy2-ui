@@ -36,6 +36,7 @@ export const ConnectionPolicyCard: React.StatelessComponent<Props> = ({ policy }
   return (
     <Card>
       <CardHeader title={'TLS 规则'}></CardHeader>
+      <Divider />
       <CardContent>
         <List>
           <ListItem>
