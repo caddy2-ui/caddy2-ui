@@ -4,19 +4,28 @@ import copy from "fast-copy";
 export const useEditor = () => {
   const [state, setState] = editorDialogState.useContainer()
   const close = () => {
-    let nextState = copy(state)
-    nextState.open = false
+    let nextState = ((state) => (state.open = false, state))(copy(state))
     setState(nextState)
   }
   const open = ({ config, file }: { config: string, file: string }, onSave: (config: string) => Promise<any>) => {
-    let nextState = copy(state)
-    nextState.file = file
-    nextState.value = config
-    nextState.onSave = onSave
+    let nextState = ((state) => (
+      state.file = file,
+      state.value = config,
+      state.onSave = onSave,
+      state
+    ))(copy(state))
     setState(nextState)
   }
-  const save = (value: string)=>{
-    state.onSave(value)
+  const save = (value: string) => {
+    let nextState = ((state) => (state.posting = true, state))(copy(state))
+    setState(nextState)
+    Promise.resolve(state.onSave(value))
+      .finally(() => {
+        setState(state => ({
+          ...state,
+          posting: false,
+        }))
+      })
   }
   return {
     close,

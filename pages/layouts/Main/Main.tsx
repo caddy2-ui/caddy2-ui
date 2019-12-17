@@ -26,8 +26,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const Main: React.StatelessComponent<{}> = props => {
-  const { children } = props;
+interface Props {
+  disableEditorDialog?: boolean
+}
+
+export const Main: React.StatelessComponent<Props> = ({ disableEditorDialog = false, children }) => {
 
   const theme = useTheme();
   const classes = useStyles(theme);
@@ -60,9 +63,13 @@ export const Main: React.StatelessComponent<{}> = props => {
         open={shouldOpenSidebar}
         variant={isDesktop ? 'persistent' : 'temporary'}
       />
-      <editorDialogState.Provider>
-        <NoSSREditorDialog />
-      </editorDialogState.Provider>
+      {
+        !disableEditorDialog && (
+          <editorDialogState.Provider>
+            <NoSSREditorDialog />
+          </editorDialogState.Provider>
+        )
+      }
       <main className={classes.content}>
         {children}
       </main>

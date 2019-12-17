@@ -4,9 +4,9 @@ import { Main as MainLayout } from "~pages/layouts";
 import { caddy2Config } from "~libs/browser/caddy2";
 import {
   Container,
-  Grid,
 } from "@material-ui/core";
-import { NoSsrEditor } from "./NoSsrEditor";
+import { EditorCard, useEditor } from "./EditorDialog";
+import { editorDialogState } from "./EditorDialog/state";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -16,16 +16,23 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default () => {
+const EditorPage = () => {
 
   const classes = useStyles(useTheme())
   const [config] = caddy2Config.useContainer()
+  const editor = useEditor()
 
   return (
-    <MainLayout>
+    <MainLayout disableEditorDialog>
       <Container className={classes.root} maxWidth={false}>
-        <NoSsrEditor config={JSON.stringify(config, null, 2)} />
+        <EditorCard config={JSON.stringify(config, null, 2)} file='caddy2-edit:/config/editor.json' />
       </Container>
     </MainLayout>
   )
 }
+
+export default () => (
+  <editorDialogState.Provider>
+    <EditorPage />
+  </editorDialogState.Provider>
+)

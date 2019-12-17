@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import *as monaco from "monaco-editor";
 import "./editor-settings";
 import { makeStyles, useTheme, colors } from "@material-ui/core";
@@ -11,28 +11,45 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export interface Props {
-  schema?: string,
-  file?: string,
   config: string,
+  file?: string,
   onChange?: (e: monaco.editor.IModelContentChangedEvent, value: string) => void
+  readonly?: boolean,
 }
 
 export const Editor: React.StatelessComponent<Props> = ({
   config,
   file = '/config/tmp.json',
   onChange = () => 0,
+  readonly: editorReadonly = false
 }) => {
 
   const classes = useStyles(useTheme())
+
+  const [editor, setEditor] = useState<monaco.editor.IStandaloneCodeEditor>(null)
+
+  useEffect(() => {
+    if (!editor) {
+      return
+    }
+    editor.updateOptions({
+      readOnly: editorReadonly,
+    })
+  }, [editorReadonly])
 
   const f = useRef()
   useEffect(() => {
     if (!f.current) {
       return
     }
-
     let modelUri = monaco.Uri.parse(`caddy2-edit:${file}`)
+
+    if (monaco.editor.getModel(modelUri)) {
+      return
+    }
+
     let model = monaco.editor.createModel(config, `json`, modelUri)
+
     model.updateOptions({
       tabSize: 2,
     })
@@ -46,8 +63,10 @@ export const Editor: React.StatelessComponent<Props> = ({
         model,
         fontSize: 16,
         wordWrap: 'on',
+        readOnly: editorReadonly,
       },
     )
+    setEditor(editor)
     editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S, () => {
       // do nothing, just hook browser save
     })
@@ -55,6 +74,7 @@ export const Editor: React.StatelessComponent<Props> = ({
     return () => {
       editor.dispose()
       model.dispose()
+      setEditor(null)
     }
   }, [f])
 
