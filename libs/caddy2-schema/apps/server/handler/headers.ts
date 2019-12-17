@@ -49,6 +49,7 @@ export const Headers = {
   schema: {
     type: 'object',
     properties: {
+      handler: { enum: ['headers'] },
       request: {
         type: 'object',
         properties: {
