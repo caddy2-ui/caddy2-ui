@@ -10,7 +10,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@material-ui/core";
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, Fragment } from "react";
 import { MoreOptions } from "~pages/components/MoreOptions";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -31,6 +31,70 @@ type DragItem = { type: symbol, id: number, handler: Handler }
 import sum from "hash-sum";
 import copy from "fast-copy";
 const makeRoute2DragItem = (ItemType: symbol) => (handler: Handler, id: number): DragItem => ({ type: ItemType, handler, id, })
+const HandlerDragRow: React.StatelessComponent<{ item: DragItem, ItemType: symbol, order: number, ditems: DragItem[], setDitems: any, }> = ({
+  item,
+  ItemType,
+  order,
+  ditems,
+  setDitems,
+}) => {
+  const classes = useStyles(useTheme())
+
+  const editor = useEditor()
+  const openHandlerEditor = (id: number) => {
+    let handler = item.handler
+    const f = `/config/app/http/server/handler/${handler.handler}/config.json`
+    console.log(f)
+    editor.open(
+      {
+        config: handler,
+        file: f
+      },
+      (config) => {
+        console.log(config)
+        editor.close()
+      },
+    )
+  }
+  
+  const [, drop] = useDrop<DragItem, void, any>({
+    accept: ItemType,
+    drop: (dragItem) => { },
+    hover: (dragItem) => { // hover finish drop work
+      if (dragItem.id === item.id) {
+        return
+      }
+      let newDisplayRoutes = copy(ditems).filter(i => i.id !== dragItem.id)
+      newDisplayRoutes.splice(order, 0, dragItem)
+      setDitems(newDisplayRoutes)
+    },
+  })
+  const [, drag] = useDrag({
+    item: item,
+    end: () => {
+      // setDisplayRoutes(routes.map(route2DragItem))
+    }
+  })
+  return (
+    <TableRow hover className={classes.item} key={item.id}>
+      <TableCell>
+        {item.handler.handler}
+      </TableCell>
+      <TableCell padding='none'>
+        <MoreOptions>
+          <MenuItem onClick={() => openHandlerEditor(item.id)}>
+            <ListItemIcon><EditIcon /></ListItemIcon>
+            <ListItemText primary='编辑'></ListItemText>
+          </MenuItem>
+          <MenuItem>
+            <ListItemIcon><DeleteIcon /></ListItemIcon>
+            <ListItemText primary='删除'></ListItemText>
+          </MenuItem>
+        </MoreOptions>
+      </TableCell>
+    </TableRow>
+  )
+}
 
 export interface Props {
   handlers: Handler[]
@@ -52,21 +116,7 @@ export const HandleCard: React.StatelessComponent<Props> = ({ handlers }) => {
       },
     )
   }
-  const openHandlerEditor = (id: number) => {
-    let handler = handlers[id]
-    const f = `/config/app/http/server/handler/${handler.handler}/config.json`
-    console.log(f)
-    editor.open(
-      {
-        config: handler,
-        file: f
-      },
-      (config) => {
-        console.log(config)
-        editor.close()
-      },
-    )
-  }
+
 
   const { ItemType, route2DragItem } = useMemo((t = Symbol()) => ({ ItemType: t, route2DragItem: makeRoute2DragItem(t) }), [])
   const [displayHandlers, setDisplayHandlers] = useState<DragItem[]>(handlers.map(route2DragItem))
@@ -98,44 +148,19 @@ export const HandleCard: React.StatelessComponent<Props> = ({ handlers }) => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {displayHandlers.map((item, id) => {
-
-          // const [, drop] = useDrop<DragItem, void, any>({
-          //   accept: ItemType,
-          //   drop: (dragItem) => { },
-          //   hover: (dragItem) => { // hover finish drop work
-          //     if (dragItem.id === item.id) {
-          //       return
-          //     }
-          //     let newDisplayRoutes = copy(displayHandlers).filter(i => i.id !== dragItem.id)
-          //     newDisplayRoutes.splice(id, 0, dragItem)
-          //     setDisplayHandlers(newDisplayRoutes)
-          //   },
-          // })
-          // const [, drag] = useDrag({
-          //   item: item,
-          //   end: () => {
-          //     // setDisplayRoutes(routes.map(route2DragItem))
-          //   }
-          // })
+        {displayHandlers.map((item, order) => {
           return (
-            <TableRow hover className={classes.item} key={item.id}>
-              <TableCell>
-                {item.handler.handler}
-              </TableCell>
-              <TableCell padding='none'>
-                <MoreOptions>
-                  <MenuItem onClick={() => openHandlerEditor(item.id)}>
-                    <ListItemIcon><EditIcon /></ListItemIcon>
-                    <ListItemText primary='编辑'></ListItemText>
-                  </MenuItem>
-                  <MenuItem>
-                    <ListItemIcon><DeleteIcon /></ListItemIcon>
-                    <ListItemText primary='删除'></ListItemText>
-                  </MenuItem>
-                </MoreOptions>
-              </TableCell>
-            </TableRow>
+            <Fragment key={item.id}>
+              <HandlerDragRow
+                {...{
+                  item,
+                  ItemType,
+                  order,
+                  ditems: displayHandlers,
+                  setDitems: setDisplayHandlers,
+                }}
+              />
+            </Fragment>
           )
         })}
       </TableBody>
