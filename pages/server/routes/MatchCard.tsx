@@ -144,7 +144,7 @@ export const MatchCard: React.StatelessComponent<Props> = ({ matchers }) => {
           <TableCell style={{ width: 44 }} padding='none'>
             <MoreOptions>
               <MenuItem>
-                <ListItemIcon><DeleteIcon /></ListItemIcon>
+                <ListItemIcon><AddIcon /></ListItemIcon>
                 <ListItemText primary='添加'></ListItemText>
               </MenuItem>
               <MenuItem onClick={openEditor}>
