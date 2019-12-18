@@ -22,7 +22,7 @@ import { Handler } from "~libs/caddy/Route/Route";
 
 const useStyles = makeStyles(theme => ({
   card_header: {
-    paddingBottom: theme.spacing(1),
+    fontWeight: 'bold',
   },
   item: {},
 }))
@@ -141,8 +141,8 @@ export const HandleCard: React.StatelessComponent<Props> = ({ handlers }) => {
     <Table cellSpacing={0} size='small'>
       <TableHead>
         <TableRow>
-          <TableCell>
-            <Typography className={classes.card_header} variant='h4'>Handler</Typography>
+          <TableCell className={classes.card_header}>
+            Handler
           </TableCell>
           <TableCell style={{ width: 44 }} padding='none'>
             <MoreOptions>

@@ -32,7 +32,7 @@ import { makeStyles, useTheme } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   card_header: {
-    paddingBottom: theme.spacing(1),
+    fontWeight: 'bold',
   },
 }))
 
@@ -138,8 +138,8 @@ export const MatchCard: React.StatelessComponent<Props> = ({ matchers }) => {
     <Table cellSpacing={0} size='small'>
       <TableHead>
         <TableRow>
-          <TableCell>
-            <Typography className={classes.card_header} variant='h4'>Matcher</Typography>
+          <TableCell className={classes.card_header}>
+            Matcher
           </TableCell>
           <TableCell style={{ width: 44 }} padding='none'>
             <MoreOptions>
