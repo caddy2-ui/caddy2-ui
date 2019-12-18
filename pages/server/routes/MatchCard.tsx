@@ -9,6 +9,7 @@ import {
   MenuItem,
   ListItemIcon,
   ListItemText,
+  Button,
 } from "@material-ui/core";
 import React, { useState, useEffect, useMemo } from "react";
 import { MoreOptions } from "~pages/components/MoreOptions";
@@ -20,9 +21,6 @@ import { Matcher } from "~libs/caddy/Route";
 import { useEditor } from "~pages/editor";
 
 import { useDrag, useDrop } from "react-dnd";
-const ItemType = {
-  Matcher: Symbol('matcher')
-}
 type DragItem = { type: symbol, id: number, matcher: Matcher }
 import sum from "hash-sum";
 import copy from "fast-copy";
@@ -90,7 +88,7 @@ export const MatcherRow: React.StatelessComponent<MatchRowProps> = ({
   })
   return (
     <TableRow hover ref={drag} key={id}>
-      <TableCell ref={drop}>
+      <TableCell ref={drop} colSpan={2}>
         <MatcherSpan matcher={item.matcher}></MatcherSpan>
       </TableCell>
       <TableCell padding='none'>
@@ -140,6 +138,9 @@ export const MatchCard: React.StatelessComponent<Props> = ({ matchers }) => {
         <TableRow>
           <TableCell className={classes.card_header}>
             Matcher
+          </TableCell>
+          <TableCell padding='none'>
+            {hasNewOrder && <Button style={{ float: 'right' }} size='small' color='primary' variant='contained'>保存排序</Button>}
           </TableCell>
           <TableCell style={{ width: 44 }} padding='none'>
             <MoreOptions>
