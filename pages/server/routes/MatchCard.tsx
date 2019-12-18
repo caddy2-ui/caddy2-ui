@@ -139,8 +139,8 @@ export const MatchCard: React.StatelessComponent<Props> = ({ matchers }) => {
           <TableCell className={classes.card_header}>
             Matcher
           </TableCell>
-          <TableCell padding='none'>
-            {hasNewOrder && <Button style={{ float: 'right' }} size='small' color='primary' variant='contained'>保存排序</Button>}
+          <TableCell padding='none' align='right'>
+            {hasNewOrder && <Button size='small' color='primary' variant='contained'>保存排序</Button>}
           </TableCell>
           <TableCell style={{ width: 44 }} padding='none'>
             <MoreOptions>

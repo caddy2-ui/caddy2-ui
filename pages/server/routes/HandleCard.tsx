@@ -9,6 +9,7 @@ import {
   MenuItem,
   ListItemIcon,
   ListItemText,
+  Button,
 } from "@material-ui/core";
 import React, { useState, useEffect, useMemo, Fragment } from "react";
 import { MoreOptions } from "~pages/components/MoreOptions";
@@ -75,7 +76,7 @@ const HandlerDragRow: React.StatelessComponent<{ item: DragItem, ItemType: symbo
   })
   return (
     <TableRow hover ref={drag} className={classes.item} key={item.id}>
-      <TableCell ref={drop}>
+      <TableCell ref={drop} colSpan={2}>
         {item.handler.handler}
       </TableCell>
       <TableCell padding='none'>
@@ -143,6 +144,9 @@ export const HandleCard: React.StatelessComponent<Props> = ({ handlers }) => {
         <TableRow>
           <TableCell className={classes.card_header}>
             Handler
+          </TableCell>
+          <TableCell padding='none' align='right'>
+            {hasNewOrder && <Button size='small' color='primary' variant='contained'>保存排序</Button>}
           </TableCell>
           <TableCell style={{ width: 44 }} padding='none'>
             <MoreOptions>
