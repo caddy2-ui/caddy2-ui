@@ -13,7 +13,7 @@ import {
   Tooltip,
 } from "@material-ui/core";
 import Head from "next/head";
-import { RouteCard } from "./route";
+import { RouteCard } from "./RouteCard";
 import { useDrag, useDrop } from "react-dnd";
 import { useEditor } from "~pages/editor";
 import { useUpdateServerOptions } from '../updateServerOptions'
