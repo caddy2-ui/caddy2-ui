@@ -24,8 +24,8 @@ import copy from "fast-copy";
 export const useUpdateConfig = (scopeInstace: AxiosInstance) => {
   const [config, setConfig] = caddy2Config.useContainer()
   const updateServer = useMemo(() => {
-    return async <T = any>(
-      dispath: (dispath: typeof setConfig, config: Config, data?: T, ) => void,
+    return async <T = any, R = T>(
+      dispath: (dispath: typeof setConfig, config: Config, data?: R) => Promise<any> | any,
       action: Action,
       path: string,
       data?: T,
@@ -42,9 +42,12 @@ export const useUpdateConfig = (scopeInstace: AxiosInstance) => {
           break;
         case Action.DELETE:
           await scopeInstace.delete(path)
+          console.log(path)
+          path = path.split('/').slice(0, -1).join('/')
+          console.log(path)
           break;
       }
-      let d = await scopeInstace.get<T>(path).then(r => r.data)
+      let d = await scopeInstace.get<R>(path).then(r => r.data)
       await dispath(setConfig, copy(config), d)
     }
   }, [config, setConfig, scopeInstace])

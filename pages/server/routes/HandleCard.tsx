@@ -6,10 +6,14 @@ import {
   TableHead,
   Typography,
   IconButton,
+  MenuItem,
+  ListItemIcon,
+  ListItemText,
 } from "@material-ui/core";
 import React, { useState, useEffect, useMemo } from "react";
+import { MoreOptions } from "~pages/components/MoreOptions";
 import EditIcon from '@material-ui/icons/Edit';
-import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
+import DeleteIcon from '@material-ui/icons/Delete';
 import { useEditor } from "~pages/editor";
 
 import { makeStyles, useTheme } from "@material-ui/core";
@@ -80,47 +84,56 @@ export const HandleCard: React.StatelessComponent<Props> = ({ handlers }) => {
             <Typography className={classes.card_header} variant='h4'>Handler</Typography>
           </TableCell>
           <TableCell style={{ width: 44 }} padding='none'>
-          </TableCell>
-          <TableCell style={{ width: 44 }} padding='none'>
-            <IconButton onClick={openEditor}><EditIcon fontSize='small' /></IconButton>
+            <MoreOptions>
+              <MenuItem onClick={openEditor}>
+                <ListItemIcon><EditIcon /></ListItemIcon>
+                <ListItemText primary='编辑'></ListItemText>
+              </MenuItem>
+              <MenuItem>
+                <ListItemIcon><DeleteIcon /></ListItemIcon>
+                <ListItemText primary='删除'></ListItemText>
+              </MenuItem>
+            </MoreOptions>
           </TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {displayHandlers.map((item, id) => {
 
-          const [, drop] = useDrop<DragItem, void, any>({
-            accept: ItemType,
-            drop: (dragItem) => { },
-            hover: (dragItem) => { // hover finish drop work
-              if (dragItem.id === item.id) {
-                return
-              }
-              let newDisplayRoutes = copy(displayHandlers).filter(i => i.id !== dragItem.id)
-              newDisplayRoutes.splice(id, 0, dragItem)
-              setDisplayHandlers(newDisplayRoutes)
-            },
-          })
-          const [, drag] = useDrag({
-            item: item,
-            end: () => {
-              // setDisplayRoutes(routes.map(route2DragItem))
-            }
-          })
+          // const [, drop] = useDrop<DragItem, void, any>({
+          //   accept: ItemType,
+          //   drop: (dragItem) => { },
+          //   hover: (dragItem) => { // hover finish drop work
+          //     if (dragItem.id === item.id) {
+          //       return
+          //     }
+          //     let newDisplayRoutes = copy(displayHandlers).filter(i => i.id !== dragItem.id)
+          //     newDisplayRoutes.splice(id, 0, dragItem)
+          //     setDisplayHandlers(newDisplayRoutes)
+          //   },
+          // })
+          // const [, drag] = useDrag({
+          //   item: item,
+          //   end: () => {
+          //     // setDisplayRoutes(routes.map(route2DragItem))
+          //   }
+          // })
           return (
-            <TableRow hover ref={drag} className={classes.item} key={item.id}>
-              <TableCell ref={drop}>
+            <TableRow hover className={classes.item} key={item.id}>
+              <TableCell>
                 {item.handler.handler}
               </TableCell>
               <TableCell padding='none'>
-                <IconButton onClick={() => openHandlerEditor(item.id)}>
-                  <EditIcon fontSize='small' />
-                </IconButton>
-              </TableCell>
-              <TableCell padding='none'>
-                <IconButton>
-                  <ArrowDownwardIcon fontSize='small' />
-                </IconButton>
+                <MoreOptions>
+                  <MenuItem onClick={() => openHandlerEditor(item.id)}>
+                    <ListItemIcon><EditIcon /></ListItemIcon>
+                    <ListItemText primary='编辑'></ListItemText>
+                  </MenuItem>
+                  <MenuItem>
+                    <ListItemIcon><DeleteIcon /></ListItemIcon>
+                    <ListItemText primary='删除'></ListItemText>
+                  </MenuItem>
+                </MoreOptions>
               </TableCell>
             </TableRow>
           )

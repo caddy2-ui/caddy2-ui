@@ -6,14 +6,21 @@ import {
   Divider,
   IconButton,
   Grid,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
 } from "@material-ui/core";
 import { Route } from "~libs/caddy/Route";
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import KeyboardTabIcon from '@material-ui/icons/KeyboardTab';
 import { MatchCard } from "./MatchCard";
 import { HandleCard } from "./HandleCard";
 import { useEditor } from "~pages/editor";
+import { MoreOptions } from "~pages/components/MoreOptions";
+import { useUpdateServerOptions } from "../updateServerOptions";
 
 import { makeStyles, useTheme } from "@material-ui/core";
 
@@ -31,6 +38,7 @@ export const RouteCard: React.StatelessComponent<Props> = ({ route, id }) => {
   const classes = useStyles(useTheme())
   const title = 'Route-' + id + (route.group ? ` : ${route.group}` : '')
   const { match = [], handle = [] } = route
+  const options = useUpdateServerOptions()
 
   const editor = useEditor()
   const openEditor = () => {
@@ -45,16 +53,27 @@ export const RouteCard: React.StatelessComponent<Props> = ({ route, id }) => {
       },
     )
   }
+  const deleteRoute = () => {
+    console.log(id)
+    options.delRoute(id)
+  }
 
   return (
-    <Card>
+    <Card style={{ minHeight: 520 }}>
       <CardHeader
         title={title}
         action={
           <Fragment>
-            <IconButton onClick={()=>openEditor()}>
-              <EditIcon fontSize='small' />
-            </IconButton>
+            <MoreOptions>
+              <MenuItem onClick={() => openEditor()} >
+                <ListItemIcon><EditIcon /></ListItemIcon>
+                <ListItemText primary='编辑设置'></ListItemText>
+              </MenuItem>
+              <MenuItem onClick={deleteRoute}>
+                <ListItemIcon ><DeleteIcon /></ListItemIcon>
+                <ListItemText primary='删除'></ListItemText>
+              </MenuItem>
+            </MoreOptions>
             <IconButton>
               {route.terminal ? <KeyboardTabIcon fontSize='small' /> : <ArrowForwardIcon fontSize='small' />}
             </IconButton>

@@ -2,7 +2,7 @@ import { Action } from "~libs/browser/api-client";
 import { useUpdateServer } from "./index";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
-import { RouteList } from "~libs/caddy/Route";
+import { RouteList, Route } from "~libs/caddy/Route";
 
 export const useUpdateServerOptions = () => {
   const router = useRouter()
@@ -42,6 +42,18 @@ export const useUpdateServerOptions = () => {
       return update(
         (server, routes) => (server.routes = routes, server),
         Action.PATCH, '/routes', routes,
+      )
+    },
+    addRoute: async (route: Route) => {
+      return update<Route, RouteList>(
+        (server, routes) => (server.routes = routes, server),
+        Action.POST, '/routes', route,
+      )
+    },
+    delRoute: async (id: number) => {
+      return update<null, RouteList>(
+        (server, routes) => (server.routes = routes, server),
+        Action.DELETE, '/routes/' + id
       )
     }
   }), [update])

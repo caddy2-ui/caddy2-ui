@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, Fragment } from "react";
 import { caddy2Config } from "~libs/browser/caddy2";
 import { getServer } from "../index";
 import { useRouter } from "next/router";
@@ -15,6 +15,7 @@ import {
 import Head from "next/head";
 import { RouteCard } from "./route";
 import { useDrag, useDrop } from "react-dnd";
+import { useEditor } from "~pages/editor";
 import { useUpdateServerOptions } from '../updateServerOptions'
 
 import { makeStyles, useTheme } from "@material-ui/core";
@@ -29,6 +30,41 @@ type DragItem = { type: symbol, id: number, route: Route }
 import sum from "hash-sum";
 import copy from "fast-copy";
 const makeRoute2DragItem = (ItemType: symbol) => (route: Route, id: number): DragItem => ({ type: ItemType, route, id, })
+
+const NewRouteButton: React.StatelessComponent = () => {
+
+  const options = useUpdateServerOptions()
+  const editor = useEditor()
+  const openEditor = () => {
+    editor.open(
+      {
+        config: {
+          group: '',
+          match: [
+            {
+              path: [''],
+            }
+          ],
+          handle: [
+            { handler: '' as any }
+          ],
+          terminal: false,
+        } as Route,
+        file: '/config/app/http/server/route/config.json'
+      },
+      async (route) => {
+        await options.addRoute(route)
+        editor.close()
+      },
+    )
+  }
+
+  return (
+    <Button color='primary' variant='contained' onClick={openEditor}>
+      新建
+    </Button>
+  )
+}
 
 const RoutesPage = () => {
 
@@ -49,6 +85,26 @@ const RoutesPage = () => {
 
   const options = useUpdateServerOptions()
 
+  const actions = (
+    <Grid container spacing={1}>
+      <Grid item>
+        <Tooltip
+          title={'排序有变化是否保存新的 Route 排序?'}
+          style={{ visibility: hasNewOrder ? 'visible' : 'hidden' }}
+          placement='top'
+          arrow
+        >
+          <Button color='primary' variant='contained' onClick={() => options.updateRoutesOrder(newRoutes)}>
+            保存排序
+          </Button>
+        </Tooltip>
+      </Grid>
+      <Grid item>
+        <NewRouteButton></NewRouteButton>
+      </Grid>
+    </Grid>
+  )
+
   return (
     <ContentLayout>
       <Head>
@@ -57,11 +113,7 @@ const RoutesPage = () => {
       <Card>
         <CardHeader
           title={"路由配置"}
-          action={(
-            <Tooltip title={'排序有变化是否保存新的 Route 排序?'} style={{ visibility: hasNewOrder ? 'visible' : 'hidden' }}>
-              <Button color='primary' variant='contained' onClick={() => options.updateRoutesOrder(newRoutes)}>保存排序</Button>
-            </Tooltip>
-          )}
+          action={actions}
         />
         <Divider />
         <CardContent>

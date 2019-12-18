@@ -19,8 +19,8 @@ export const useUpdateServer = (name: string) => {
   }, [name])
   const update = useUpdateConfig(instace)
   return useMemo(() => {
-    return <T = any>(
-      _dispath: (server: Server, data?: T) => Server,
+    return <T = any, R = T>(
+      _dispath: (server: Server, data?: R) => Server,
       action: Action,
       path: string,
       data?: T,
