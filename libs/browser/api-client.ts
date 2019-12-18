@@ -42,9 +42,7 @@ export const useUpdateConfig = (scopeInstace: AxiosInstance) => {
           break;
         case Action.DELETE:
           await scopeInstace.delete(path)
-          console.log(path)
-          path = path.split('/').slice(0, -1).join('/')
-          console.log(path)
+          path = path.replace(/\/[^\/]+(\/|)$/, '')
           break;
       }
       let d = await scopeInstace.get<R>(path).then(r => r.data)
