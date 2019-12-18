@@ -1,5 +1,5 @@
 import { Server } from "./server";
-import { Route } from "./route";
+import { Route, RouteHandler } from "./route";
 import { TLSConnectionPolicy } from "./tls_connection_policy";
 import { ClientAuthentication } from "./client_authentication";
 import { Matcher, RegexpMatcher } from "./matcher";
@@ -8,7 +8,7 @@ import { schemas as Handler } from "./handler";
 
 export const schemas = [
   Server,
-  Route,
+  Route, RouteHandler,
   TLSConnectionPolicy,
   ClientAuthentication,
   Matcher, RegexpMatcher,
