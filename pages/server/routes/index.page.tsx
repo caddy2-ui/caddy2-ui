@@ -66,6 +66,46 @@ const NewRouteButton: React.StatelessComponent = () => {
   )
 }
 
+const RouteDragCard: React.StatelessComponent<{ item: DragItem, ItemType: symbol, order: number, ditems: DragItem[], setDitems: any, }> = ({
+  item,
+  ItemType,
+  order,
+  ditems,
+  setDitems,
+}) => {
+  const [, drop] = useDrop<DragItem, void, any>({
+    accept: ItemType,
+    drop: (dragItem) => { },
+    hover: (dragItem) => { // hover finish drop work
+      if (dragItem.id === item.id) {
+        return
+      }
+      let newDisplayRoutes = copy(ditems).filter(i => i.id !== dragItem.id)
+      newDisplayRoutes.splice(order, 0, dragItem)
+      setDitems(newDisplayRoutes)
+    },
+  })
+  const [, drag] = useDrag({
+    item: item,
+    end: () => {
+      // setDisplayRoutes(routes.map(route2DragItem))
+    }
+  })
+  return (
+    <Grid item key={item.id}
+      ref={drop}
+      lg={6}
+      md={6}
+      xl={4}
+      xs={12}
+    >
+      <div ref={drag}>
+        <RouteCard route={item.route} id={item.id} />
+      </div>
+    </Grid>
+  )
+}
+
 const RoutesPage = () => {
 
   const classes = useStyles(useTheme())
@@ -100,7 +140,7 @@ const RoutesPage = () => {
         </Tooltip>
       </Grid>
       <Grid item>
-        <NewRouteButton></NewRouteButton>
+        <NewRouteButton />
       </Grid>
     </Grid>
   )
@@ -119,37 +159,19 @@ const RoutesPage = () => {
         <CardContent>
           <Grid container spacing={3}>
             {
-              displayRoutes.map((item, id) => {
-                const [, drop] = useDrop<DragItem, void, any>({
-                  accept: ItemType,
-                  drop: (dragItem) => { },
-                  hover: (dragItem) => { // hover finish drop work
-                    if (dragItem.id === item.id) {
-                      return
-                    }
-                    let newDisplayRoutes = copy(displayRoutes).filter(i => i.id !== dragItem.id)
-                    newDisplayRoutes.splice(id, 0, dragItem)
-                    setDisplayRoutes(newDisplayRoutes)
-                  },
-                })
-                const [, drag] = useDrag({
-                  item: item,
-                  end: () => {
-                    // setDisplayRoutes(routes.map(route2DragItem))
-                  }
-                })
+              displayRoutes.map((item, order) => {
                 return (
-                  <Grid item key={item.id}
-                    ref={drop}
-                    lg={6}
-                    md={6}
-                    xl={4}
-                    xs={12}
-                  >
-                    <div ref={drag}>
-                      <RouteCard route={item.route} id={item.id} />
-                    </div>
-                  </Grid>
+                  <Fragment key={item.id}>
+                    <RouteDragCard
+                      {...{
+                        item,
+                        ItemType,
+                        order,
+                        ditems: displayRoutes,
+                        setDitems: setDisplayRoutes,
+                      }}
+                    />
+                  </Fragment>
                 )
               })
             }
