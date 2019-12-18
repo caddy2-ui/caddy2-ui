@@ -18,64 +18,8 @@
     },
     "http": {
       "servers": {
-        "caddy2-admin-webui": {
-          "listen": ["localhost:2020"],
-          "routes": [
-            {
-              "match": [{ "path": ["/caddy2-api"] }],
-              "handle": [
-                { "handler": "rewrite", "strip_path_prefix": "/caddy2-api" },
-                {
-                  "handler": "reverse_proxy",
-                  "upstreams": [{ "dial": "localhost:2019" }]
-                }
-              ],
-              "terminal": true
-            },
-            {
-              "handle": [
-                {
-                  "handler": "reverse_proxy",
-                  "upstreams": [{ "dial": "127.0.0.1:3000" }]
-                }
-              ],
-              "terminal": true
-            },
-            {
-              "group": "test",
-              "match": [
-                {
-                  "protocol": "https",
-                  "host": ["localhost", "127.0.0.1"],
-                  "path": ["/caddy2-api"]
-                },
-                { "host": ["localhost", "127.0.0.1"] }
-              ],
-              "handle": [
-                { "handler": "rewrite", "strip_path_prefix": "/caddy2-api" },
-                {
-                  "handler": "reverse_proxy",
-                  "upstreams": [{ "dial": "localhost:2019" }]
-                }
-              ]
-            }
-          ],
-          "automatic_https": {
-            "disable": true,
-            "skip": ["localhost"]
-          },
-          "tls_connection_policies": [
-            {
-              "client_authentication": {
-                "trusted_ca_certs": [
-                  "MIIDsTCCApmgAwIBAgIJAM/AnyM0MWQ2MA0GCSqGSIb3DQEBCwUAMDwxEjAQBgNVBAoTCWxvY2FsaG9zdDESMBAGA1UECxMJbG9jYWxob3N0MRIwEAYDVQQDEwlsb2NhbGhvc3QwIBcNMTkxMjEzMDY1NjAwWhgPMzAxOTEyMTMwNjU2MDBaMDwxEjAQBgNVBAoTCWxvY2FsaG9zdDESMBAGA1UECxMJbG9jYWxob3N0MRIwEAYDVQQDEwlsb2NhbGhvc3QwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDfy3aNC6Y/6CKuyW50i5kQBEGhIcxnfnS+cHFdGKYTY+D0Y8damSww9/drS3cM/IXLEM+VY+EUWyHDBMb6HxsCxrSc7k8D0KGmlbrgTIa81AOq9tDTKKYADAMYgfKwLGnt02othW2VCXwuuI+OV4un+rfQbTuG/buk7RbahNh3bbZ+I6+Edq/TCYtHWXUkaJRHg1hKRDIh4a9KWk+CIbaNXuz5c9mbRLAO0ExB6L9dljWBF0bJhMJvVaqciovuX0RstWWuLVbMk2A27HVSZg3hLfKcTaYO604P8QkAhJ10Q9NDUfqUar53wqvG0V4QHgsoZ24h3U76KiBU5os8Zm27AgMBAAGjgbMwgbAwDAYDVR0TAQH/BAIwADAdBgNVHQ4EFgQUUpeNVZDTSaM7cq5Po/GIiaxnlx4wDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAfBgNVHREEGDAWgglsb2NhbGhvc3SCCTEyNy4wLjAuMTARBglghkgBhvhCAQEEBAMCBsAwHgYJYIZIAYb4QgENBBEWD3hjYSBjZXJ0aWZpY2F0ZTANBgkqhkiG9w0BAQsFAAOCAQEAi9p/anNMwOMAZh36A0XfYmbFafdTkuM0yJfOKE0coKkFqIW5V8id77Dkf4mHy961SynrBN2Zg4Ir2nnfvHYP/ux8jcXf9sesiI8T2BcK4h5vT1pLSxVV1PepPpAq1zobljmprDe80/hM67DsbnhTEQoGaADbjLFXaX0vZKp9KRHETaApEvGEllYVwtNXc2eC6s2nEs1DGEZtCF4U/Jufs9YYhdoSzickQNAdAb0WHee0fkb5zWY4gf6h7LX38+39ciGih8Y/4vMinyOB7MfCmxfGF74XalU4jH6lzWdGZOGkkbt8lie5uxg1lpMPBmEZ2y1JQjdiOF0CY4aH7XS51w=="
-                ]
-              }
-            }
-          ]
-        },
         "example-server": {
-          "listen": ["localhost:2021"],
+          "listen": ["localhost:2022"],
           "routes": [
             {
               "match": [{ "path": ["/caddy2-api"] }],
