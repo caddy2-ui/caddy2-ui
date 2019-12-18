@@ -47,8 +47,8 @@ export const RouteCard: React.StatelessComponent<Props> = ({ route, id }) => {
         config: route,
         file: '/config/app/http/server/route/config.json'
       },
-      (config) => {
-        console.log(config)
+      async (config) => {
+        await options.updateRoute(config, id)
         editor.close()
       },
     )

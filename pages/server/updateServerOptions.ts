@@ -50,6 +50,12 @@ export const useUpdateServerOptions = () => {
         Action.POST, '/routes', route,
       )
     },
+    updateRoute: async (route: Route, id: number) => {
+      return update<Route>(
+        (server, route) => (server.routes[id] = route, server),
+        Action.PUT, '/routes/' + id, route,
+      )
+    },
     delRoute: async (id: number) => {
       return update<null, RouteList>(
         (server, routes) => (server.routes = routes, server),
