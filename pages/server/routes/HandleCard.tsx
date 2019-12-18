@@ -76,8 +76,8 @@ const HandlerDragRow: React.StatelessComponent<{ item: DragItem, ItemType: symbo
     }
   })
   return (
-    <TableRow hover className={classes.item} key={item.id}>
-      <TableCell>
+    <TableRow hover ref={drag} className={classes.item} key={item.id}>
+      <TableCell ref={drop}>
         {item.handler.handler}
       </TableCell>
       <TableCell padding='none'>
