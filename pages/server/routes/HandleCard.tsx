@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 import React, { useState, useEffect, useMemo, Fragment } from "react";
 import { MoreOptions } from "~pages/components/MoreOptions";
+import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useEditor } from "~pages/editor";
@@ -43,12 +44,10 @@ const HandlerDragRow: React.StatelessComponent<{ item: DragItem, ItemType: symbo
   const editor = useEditor()
   const openHandlerEditor = (id: number) => {
     let handler = item.handler
-    const f = `/config/app/http/server/handler/${handler.handler}/config.json`
-    console.log(f)
     editor.open(
       {
         config: handler,
-        file: f
+        file: `/config/app/http/server/handler/${handler.handler}/config.json`
       },
       (config) => {
         console.log(config)
@@ -56,7 +55,6 @@ const HandlerDragRow: React.StatelessComponent<{ item: DragItem, ItemType: symbo
       },
     )
   }
-  
   const [, drop] = useDrop<DragItem, void, any>({
     accept: ItemType,
     drop: (dragItem) => { },
@@ -116,6 +114,19 @@ export const HandleCard: React.StatelessComponent<Props> = ({ handlers }) => {
       },
     )
   }
+  const openAddEditor = () => {
+    editor.open(
+      {
+        config: { handler: '' },
+        file: `/config/app/http/server/handler/config.json`
+      },
+      (config) => {
+        console.log(config)
+        editor.close()
+      },
+    )
+  }
+
 
 
   const { ItemType, route2DragItem } = useMemo((t = Symbol()) => ({ ItemType: t, route2DragItem: makeRoute2DragItem(t) }), [])
@@ -135,6 +146,10 @@ export const HandleCard: React.StatelessComponent<Props> = ({ handlers }) => {
           </TableCell>
           <TableCell style={{ width: 44 }} padding='none'>
             <MoreOptions>
+              <MenuItem onClick={openAddEditor}>
+                <ListItemIcon><AddIcon /></ListItemIcon>
+                <ListItemText primary='添加'></ListItemText>
+              </MenuItem>
               <MenuItem onClick={openEditor}>
                 <ListItemIcon><EditIcon /></ListItemIcon>
                 <ListItemText primary='编辑'></ListItemText>
