@@ -5,7 +5,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "caddy2": "cd example/ && caddy2 run --config caddy.json",
+    "caddy2:start": "cd example/ && caddy2 start --config manager.json && caddy2 start --config caddy.json",
+    "caddy2:stop": "pkill caddy2",
     "dev": "next",
     "start": "next start",
     "predev": "rm -rf public/monaco-editor",
