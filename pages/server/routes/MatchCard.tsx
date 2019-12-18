@@ -14,6 +14,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { MoreOptions } from "~pages/components/MoreOptions";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import AddIcon from '@material-ui/icons/Add';
 import { MatcherSpan } from "./MatcherSpan";
 import { Matcher } from "~libs/caddy/Route";
 import { useEditor } from "~pages/editor";
@@ -142,9 +143,17 @@ export const MatchCard: React.StatelessComponent<Props> = ({ matchers }) => {
           </TableCell>
           <TableCell style={{ width: 44 }} padding='none'>
             <MoreOptions>
+              <MenuItem>
+                <ListItemIcon><DeleteIcon /></ListItemIcon>
+                <ListItemText primary='添加'></ListItemText>
+              </MenuItem>
               <MenuItem onClick={openEditor}>
                 <ListItemIcon><EditIcon /></ListItemIcon>
                 <ListItemText primary='编辑'></ListItemText>
+              </MenuItem>
+              <MenuItem>
+                <ListItemIcon><DeleteIcon /></ListItemIcon>
+                <ListItemText primary='删除'></ListItemText>
               </MenuItem>
             </MoreOptions>
           </TableCell>
