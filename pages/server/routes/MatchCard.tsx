@@ -69,27 +69,27 @@ export const MatcherRow: React.StatelessComponent<MatchRowProps> = ({
     )
   }
 
-  // const [, drop] = useDrop<DragItem, void, any>({
-  //   accept: ItemType,
-  //   drop: (dragItem) => { },
-  //   hover: (dragItem) => { // hover finish drop work
-  //     if (dragItem.id === item.id) {
-  //       return
-  //     }
-  //     let newDisplayRoutes = copy(displayMatchers).filter(i => i.id !== dragItem.id)
-  //     newDisplayRoutes.splice(id, 0, dragItem)
-  //     setDisplayMatchers(newDisplayRoutes)
-  //   },
-  // })
-  // const [, drag] = useDrag({
-  //   item: item,
-  //   end: () => {
-  //     // setDisplayRoutes(routes.map(route2DragItem))
-  //   }
-  // })
+  const [, drop] = useDrop<DragItem, void, any>({
+    accept: ItemType,
+    drop: (dragItem) => { },
+    hover: (dragItem) => { // hover finish drop work
+      if (dragItem.id === item.id) {
+        return
+      }
+      let newDisplayRoutes = copy(displayMatchers).filter(i => i.id !== dragItem.id)
+      newDisplayRoutes.splice(id, 0, dragItem)
+      setDisplayMatchers(newDisplayRoutes)
+    },
+  })
+  const [, drag] = useDrag({
+    item: item,
+    end: () => {
+      // setDisplayRoutes(routes.map(route2DragItem))
+    }
+  })
   return (
-    <TableRow hover key={id}>
-      <TableCell >
+    <TableRow hover ref={drag} key={id}>
+      <TableCell ref={drop}>
         <MatcherSpan matcher={item.matcher}></MatcherSpan>
       </TableCell>
       <TableCell padding='none'>
