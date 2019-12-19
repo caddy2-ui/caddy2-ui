@@ -45,21 +45,16 @@ export const Provider: React.StatelessComponent = (props) => {
   )
 }
 
-class MyApp extends App {
+class CMyApp extends React.Component {
   render() {
-    const { Component, pageProps } = this.props;
     return (
-      <Fragment>
-        <CssBaseline />
-        <NoSsr>
-          <Provider>
-            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-            <Component {...pageProps} />
-          </Provider>
-        </NoSsr>
-      </Fragment>
+      <NoSsr>
+        <Provider>
+          {this.props.children}
+        </Provider>
+      </NoSsr>
     )
   }
 }
 
-export default MyApp;
+export default CMyApp;

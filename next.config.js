@@ -8,10 +8,10 @@ const MONACO_DIR = path.join(__dirname, './node_modules/monaco-editor')
 
 module.exports = {
   poweredByHeader: false,
-  pageExtensions: ["page.tsx", "api.ts"],
+  pageExtensions: ["fpage.tsx", "api.ts"],
   webpack: (config, options) => {
     const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
-    
+
     for (let name in alias) {
       let dir = alias[name]
       config.resolve.alias[name] = path.join(__dirname, dir)
