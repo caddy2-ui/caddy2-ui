@@ -49,13 +49,15 @@ class MyApp extends App {
   render() {
     const { Component, pageProps } = this.props;
     return (
-      <NoSsr>
-        <Provider>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          <Component {...pageProps} />
-        </Provider>
-      </NoSsr>
+      <Fragment>
+        <CssBaseline />
+        <NoSsr>
+          <Provider>
+            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+            <Component {...pageProps} />
+          </Provider>
+        </NoSsr>
+      </Fragment>
     )
   }
 }
