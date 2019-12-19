@@ -1,8 +1,8 @@
 import React, { Fragment } from "react";
 import { caddy2Config } from "~libs/browser/caddy2";
-import { getServer } from "./index";
+import { getServer } from "../index";
 import { useRouter } from "next/router";
-import { ContentLayout } from "./components/ContentLayout";
+import { ContentLayout } from "../components/ContentLayout";
 import { makeStyles, useTheme } from "@material-ui/core";
 import {
   Container,
@@ -17,11 +17,10 @@ import {
   CardActions,
   Button,
 } from "@material-ui/core";
-import { ConnectionPolicyCard } from "./components/ConnectionPolicyCard";
+import { ConnectionPolicyCard } from "./ConnectionPolicyCard";
 import Head from "next/head";
 import { useEditor } from "~pages/editor";
-import { useUpdateServerOptions } from "./updateServerOptions";
-import { Server } from "~libs/caddy/Server";
+import { useUpdateServerOptions } from "../updateServerOptions";
 import { ConnectionPolicy } from "~libs/caddy/Server/ConnectionPolicy";
 
 const useStyles = makeStyles(theme => ({

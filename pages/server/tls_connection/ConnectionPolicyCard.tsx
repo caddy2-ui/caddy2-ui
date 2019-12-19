@@ -9,17 +9,18 @@ import {
   ListItemIcon,
   ListItem,
   ListItemText,
+  ListItemSecondaryAction,
   MenuItem,
-  CardActions,
-  Button,
   Collapse,
 } from "@material-ui/core";
 import React from "react";
-import { useUpdateServerOptions } from "../updateServerOptions";
 import EditIcon from "@material-ui/icons/Edit";
+import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { Server } from "../index";
 import { MoreOptions } from "~pages/components/MoreOptions";
+
+import { Server } from "../index";
+import { useUpdateServerOptions } from "../updateServerOptions";
 
 import { makeStyles, useTheme } from "@material-ui/core";
 import { useEditor } from "~pages/editor";
@@ -106,6 +107,14 @@ export const ConnectionPolicyCard: React.StatelessComponent<Props> = ({ policy, 
           </Collapse>
           <ListItem>
             <ListItemText primary={'客户端证书 - CA 证书'}></ListItemText>
+            <ListItemSecondaryAction>
+              <MoreOptions>
+                <MenuItem>
+                  <ListItemIcon><AddIcon /></ListItemIcon>
+                  <ListItemText>添加 CA 证书</ListItemText>
+                </MenuItem>
+              </MoreOptions>
+            </ListItemSecondaryAction>
           </ListItem>
           <Collapse in={TrustedCACerts.length !== 0}>
             <List>
@@ -118,6 +127,14 @@ export const ConnectionPolicyCard: React.StatelessComponent<Props> = ({ policy, 
           </Collapse>
           <ListItem>
             <ListItemText primary={'客户端证书 - Leaf 证书'}></ListItemText>
+            <ListItemSecondaryAction>
+              <MoreOptions>
+                <MenuItem>
+                  <ListItemIcon><AddIcon /></ListItemIcon>
+                  <ListItemText>添加 Leaf 证书</ListItemText>
+                </MenuItem>
+              </MoreOptions>
+            </ListItemSecondaryAction>
           </ListItem>
           <Collapse in={TrustedLeafCert.length !== 0}>
             <List>
