@@ -30,7 +30,7 @@ export interface Matcher {
   header?: {
     [Field: string]: string[]
   }
-  header_regexp: {
+  header_regexp?: {
     [Field: string]: RegexpMatcher
   }
   /**
