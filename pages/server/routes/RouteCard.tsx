@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core";
 import { Route } from "~libs/caddy/Route";
 import EditIcon from '@material-ui/icons/Edit';
+import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import KeyboardTabIcon from '@material-ui/icons/KeyboardTab';
@@ -53,32 +54,50 @@ export const RouteCard: React.StatelessComponent<Props> = ({ route, id }) => {
       },
     )
   }
+  const openAddMatchEditor = () => {
+    editor.open(
+      {
+        config: { match: [] },
+        file: '/config/app/http/server/route/config.json'
+      },
+      async (config) => {
+        await options.addMatch(id, config.match)
+        editor.close()
+      },
+    )
+  }
   const deleteRoute = () => {
-    console.log(id)
     options.delRoute(id)
   }
+  const action = (
+    <Fragment>
+      <MoreOptions>
+        {match.length !== 0 ? null : (
+          <MenuItem onClick={() => openAddMatchEditor()} >
+            <ListItemIcon><AddIcon /></ListItemIcon>
+            <ListItemText primary='添加 Match'></ListItemText>
+          </MenuItem>
+        )}
+        <MenuItem onClick={() => openEditor()} >
+          <ListItemIcon><EditIcon /></ListItemIcon>
+          <ListItemText primary='编辑设置'></ListItemText>
+        </MenuItem>
+        <MenuItem onClick={deleteRoute}>
+          <ListItemIcon ><DeleteIcon /></ListItemIcon>
+          <ListItemText primary='删除'></ListItemText>
+        </MenuItem>
+      </MoreOptions>
+      <IconButton>
+        {route.terminal ? <KeyboardTabIcon fontSize='small' /> : <ArrowForwardIcon fontSize='small' />}
+      </IconButton>
+    </Fragment>
+  )
 
   return (
     <Card style={{ minHeight: 520 }}>
       <CardHeader
         title={title}
-        action={
-          <Fragment>
-            <MoreOptions>
-              <MenuItem onClick={() => openEditor()} >
-                <ListItemIcon><EditIcon /></ListItemIcon>
-                <ListItemText primary='编辑设置'></ListItemText>
-              </MenuItem>
-              <MenuItem onClick={deleteRoute}>
-                <ListItemIcon ><DeleteIcon /></ListItemIcon>
-                <ListItemText primary='删除'></ListItemText>
-              </MenuItem>
-            </MoreOptions>
-            <IconButton>
-              {route.terminal ? <KeyboardTabIcon fontSize='small' /> : <ArrowForwardIcon fontSize='small' />}
-            </IconButton>
-          </Fragment>
-        }
+        action={action}
       />
       <Divider />
       <CardContent className={classes.content}>

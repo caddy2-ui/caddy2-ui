@@ -62,6 +62,12 @@ export const useUpdateServerOptions = () => {
         Action.DELETE, '/routes/' + id
       )
     },
+    addMatch: async (id: number, match: Matcher[]) => {
+      return update(
+        (server, match) => (server.routes[id].match = match, server),
+        Action.POST, `/routes/${id}/match`, match
+      )
+    },
     updateMatch: async (id: number, match: Matcher[]) => {
       return update(
         (server, match) => (server.routes[id].match = match, server),
