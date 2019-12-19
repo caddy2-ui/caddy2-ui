@@ -1,6 +1,6 @@
 FROM node:12.2.0-alpine as BASE
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories \ 
-  && apk add --no-cache ca-certificates \
+  # && apk add --no-cache ca-certificates \
   && npm config set registry https://registry.npm.taobao.org
 
 FROM BASE as BUILD-BASE
@@ -33,8 +33,6 @@ RUN cd /tmp/package \
   && rm -rf node_modules .next/cache 
 
 FROM BASE
-# 运行依赖
-RUN apk add --no-cache openssh 
 ENV NODE_ENV=production
 COPY --from=PROD-modules /app/node_modules /app/node_modules
 COPY --from=BUILD /tmp/package /app
