@@ -3,6 +3,7 @@ import { useUpdateServer } from "./index";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { RouteList, Route, Matcher } from "~libs/caddy/Route";
+import { Handler } from "~libs/caddy/Route/Route";
 
 export const useUpdateServerOptions = () => {
   const router = useRouter()
@@ -83,10 +84,10 @@ export const useUpdateServerOptions = () => {
     addMatcher: async (id: number, match: Matcher) => {
       return update<Matcher, Matcher[]>(
         (server, match) => (server.routes[id].match = match, server),
-        Action.POST, `/routes/${id}/match/`, match
+        Action.PUT, `/routes/${id}/match/`, match
       )
     },
-    updateMatcher: async (id: number, match_id:number, matcher: Matcher) => {
+    updateMatcher: async (id: number, match_id: number, matcher: Matcher) => {
       return update<Matcher>(
         (server, matcher) => (server.routes[id].match[match_id] = matcher, server),
         Action.PATCH, `/routes/${id}/match/${match_id}`, matcher
@@ -97,6 +98,42 @@ export const useUpdateServerOptions = () => {
         (server, match) => (server.routes[id].match = match, server),
         Action.DELETE, `/routes/${id}/match/${match_id}`
       )
-    }
+    },
+    addHandle: async (id: number, handle: Handler[]) => {
+      return update(
+        (server, handle) => (server.routes[id].handle = handle, server),
+        Action.POST, `/routes/${id}/handle`, handle
+      )
+    },
+    updateHandle: async (id: number, handle: Handler[]) => {
+      return update(
+        (server, handle) => (server.routes[id].handle = handle, server),
+        Action.PATCH, `/routes/${id}/handle`, handle
+      )
+    },
+    delHandle: async (id: number) => {
+      return update<null, Route>(
+        (server, route) => (server.routes[id] = route, server),
+        Action.DELETE, `/routes/${id}/handle/`
+      )
+    },
+    addHandler: async (id: number, handler: Handler) => {
+      return update<Handler, Handler[]>(
+        (server, handle) => (server.routes[id].handle = handle, server),
+        Action.PUT, `/routes/${id}/handle/`, handler
+      )
+    },
+    updateHandler: async (id: number, handle_id: number, handler: Handler) => {
+      return update<Handler>(
+        (server, handler) => (server.routes[id].handle[handle_id] = handler, server),
+        Action.PATCH, `/routes/${id}/handle/${handle_id}`, handler
+      )
+    },
+    delHandler: async (id: number, handle_id: number) => {
+      return update<null, Handler[]>(
+        (server, handle) => (server.routes[id].handle = handle, server),
+        Action.DELETE, `/routes/${id}/handle/${handle_id}`
+      )
+    },
   }), [update])
 }

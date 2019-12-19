@@ -32,16 +32,20 @@ import { useDrag, useDrop } from "react-dnd";
 type DragItem = { type: symbol, id: number, handler: Handler }
 import sum from "hash-sum";
 import copy from "fast-copy";
+import { useUpdateServerOptions } from "../updateServerOptions";
+import { route } from "next/dist/next-server/server/router";
 const makeRoute2DragItem = (ItemType: symbol) => (handler: Handler, id: number): DragItem => ({ type: ItemType, handler, id, })
-const HandlerDragRow: React.StatelessComponent<{ item: DragItem, ItemType: symbol, order: number, ditems: DragItem[], setDitems: any, }> = ({
+const HandlerDragRow: React.StatelessComponent<{ item: DragItem, ItemType: symbol, order: number, routeID: number, ditems: DragItem[], setDitems: any, }> = ({
   item,
   ItemType,
   order,
+  routeID,
   ditems,
   setDitems,
 }) => {
   const classes = useStyles(useTheme())
 
+  const options = useUpdateServerOptions()
   const editor = useEditor()
   const openHandlerEditor = (id: number) => {
     let handler = item.handler
@@ -50,12 +54,16 @@ const HandlerDragRow: React.StatelessComponent<{ item: DragItem, ItemType: symbo
         config: handler,
         file: `/config/app/http/server/handler/${handler.handler}/config.json`
       },
-      (config) => {
-        console.log(config)
+      async (config) => {
+        await options.updateHandler(routeID, item.id, config)
         editor.close()
       },
     )
   }
+  const delHandler = async () => {
+    await options.delHandler(routeID, item.id)
+  }
+
   const [, drop] = useDrop<DragItem, void, any>({
     accept: ItemType,
     drop: (dragItem) => { },
@@ -85,7 +93,7 @@ const HandlerDragRow: React.StatelessComponent<{ item: DragItem, ItemType: symbo
             <ListItemIcon><EditIcon /></ListItemIcon>
             <ListItemText primary='编辑'></ListItemText>
           </MenuItem>
-          <MenuItem>
+          <MenuItem onClick={delHandler}>
             <ListItemIcon><DeleteIcon /></ListItemIcon>
             <ListItemText primary='删除'></ListItemText>
           </MenuItem>
@@ -104,14 +112,19 @@ export const HandleCard: React.StatelessComponent<Props> = ({ handlers, routeID 
   const classes = useStyles(useTheme())
 
   const editor = useEditor()
+  const options = useUpdateServerOptions()
   const openEditor = () => {
     editor.open(
       {
-        config: { handle: handlers, },
+        config: { handle: handlers.length ? handlers : [{ handler: '' } as any], },
         file: '/config/app/http/server/route/config.json'
       },
-      (config) => {
-        console.log(config)
+      async (config) => {
+        if (handlers.length) {
+          await options.updateHandle(routeID, config.handle)
+        } else {
+          await options.addHandle(routeID, config.handle)
+        }
         editor.close()
       },
     )
@@ -119,17 +132,18 @@ export const HandleCard: React.StatelessComponent<Props> = ({ handlers, routeID 
   const openAddEditor = () => {
     editor.open(
       {
-        config: { handler: '' },
+        config: { handler: '' } as any,
         file: `/config/app/http/server/handler/config.json`
       },
-      (config) => {
-        console.log(config)
+      async (config) => {
+        await options.addHandler(routeID, config)
         editor.close()
       },
     )
   }
-
-
+  const delHandle = () => {
+    options.delHandle(routeID)
+  }
 
   const { ItemType, route2DragItem } = useMemo((t = Symbol()) => ({ ItemType: t, route2DragItem: makeRoute2DragItem(t) }), [])
   const [displayHandlers, setDisplayHandlers] = useState<DragItem[]>(handlers.map(route2DragItem))
@@ -138,6 +152,9 @@ export const HandleCard: React.StatelessComponent<Props> = ({ handlers, routeID 
   }, [sum(handlers)])
   const nowHandlers = displayHandlers.map(i => i.handler)
   const hasNewOrder = sum(handlers) !== sum(nowHandlers)
+  const saveOrder = async () => {
+    await options.updateHandle(routeID, nowHandlers)
+  }
 
   return (
     <Table cellSpacing={0} size='small'>
@@ -147,22 +164,22 @@ export const HandleCard: React.StatelessComponent<Props> = ({ handlers, routeID 
             Handler
           </TableCell>
           <TableCell padding='none' align='right'>
-            {hasNewOrder && <Button size='small' color='primary' variant='contained'>保存排序</Button>}
+            {hasNewOrder && <Button onClick={saveOrder} size='small' color='primary' variant='contained'>保存排序</Button>}
           </TableCell>
           <TableCell style={{ width: 44 }} padding='none'>
             <MoreOptions>
-              <MenuItem onClick={openAddEditor}>
-                <ListItemIcon><AddIcon /></ListItemIcon>
-                <ListItemText primary='添加'></ListItemText>
-              </MenuItem>
               <MenuItem onClick={openEditor}>
                 <ListItemIcon><EditIcon /></ListItemIcon>
                 <ListItemText primary='编辑'></ListItemText>
               </MenuItem>
-              <MenuItem>
+              <MenuItem onClick={openAddEditor}>
+                <ListItemIcon><AddIcon /></ListItemIcon>
+                <ListItemText primary='添加'></ListItemText>
+              </MenuItem>
+              {/* <MenuItem onClick={delHandle}>
                 <ListItemIcon><DeleteIcon /></ListItemIcon>
                 <ListItemText primary='删除'></ListItemText>
-              </MenuItem>
+              </MenuItem> */}
             </MoreOptions>
           </TableCell>
         </TableRow>
@@ -176,6 +193,7 @@ export const HandleCard: React.StatelessComponent<Props> = ({ handlers, routeID 
                   item,
                   ItemType,
                   order,
+                  routeID,
                   ditems: displayHandlers,
                   setDitems: setDisplayHandlers,
                 }}
