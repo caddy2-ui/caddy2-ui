@@ -19,6 +19,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { MatcherSpan } from "./MatcherSpan";
 import { Matcher } from "~libs/caddy/Route";
 import { useEditor } from "~pages/editor";
+import { useUpdateServerOptions } from "../updateServerOptions";
 
 import { useDrag, useDrop } from "react-dnd";
 type DragItem = { type: symbol, id: number, matcher: Matcher }
@@ -35,12 +36,14 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export interface Props {
-  matchers: Matcher[]
+  matchers: Matcher[],
+  routeID: number,
 }
 
 interface MatchRowProps {
   ItemType: symbol,
   item: DragItem,
+  routeID: number
   id: number,
   displayMatchers: any,
   setDisplayMatchers: any
@@ -50,9 +53,12 @@ export const MatcherRow: React.StatelessComponent<MatchRowProps> = ({
   ItemType,
   item,
   id,
+  routeID,
   displayMatchers,
   setDisplayMatchers,
 }) => {
+
+  const options = useUpdateServerOptions()
 
   const editor = useEditor()
   const openEditor = () => {
@@ -61,11 +67,14 @@ export const MatcherRow: React.StatelessComponent<MatchRowProps> = ({
         config: item.matcher,
         file: '/config/app/http/server/matcher/config.json'
       },
-      (config) => {
-        console.log(config)
+      async (config) => {
+        await options.updateMatcher(routeID, item.id, config)
         editor.close()
       },
     )
+  }
+  const delMatcher = async () => {
+    await options.delMatcher(routeID, item.id)
   }
 
   const [, drop] = useDrop<DragItem, void, any>({
@@ -97,7 +106,7 @@ export const MatcherRow: React.StatelessComponent<MatchRowProps> = ({
             <ListItemIcon><EditIcon /></ListItemIcon>
             <ListItemText primary='编辑'></ListItemText>
           </MenuItem>
-          <MenuItem>
+          <MenuItem onClick={delMatcher}>
             <ListItemIcon><DeleteIcon /></ListItemIcon>
             <ListItemText primary='删除'></ListItemText>
           </MenuItem>
@@ -107,18 +116,31 @@ export const MatcherRow: React.StatelessComponent<MatchRowProps> = ({
   )
 }
 
-export const MatchCard: React.StatelessComponent<Props> = ({ matchers }) => {
+export const MatchCard: React.StatelessComponent<Props> = ({ matchers, routeID }) => {
   const classes = useStyles(useTheme())
 
   const editor = useEditor()
+  const options = useUpdateServerOptions()
   const openEditor = () => {
     editor.open(
       {
         config: { match: matchers, },
         file: '/config/app/http/server/route/config.json'
       },
-      (config) => {
-        console.log(config)
+      async (config) => {
+        await options.updateMatch(routeID, config.match)
+        editor.close()
+      },
+    )
+  }
+  const openAddEditor = () => {
+    editor.open(
+      {
+        config: { path: [''] } as Matcher,
+        file: '/config/app/http/server/matcher/config.json'
+      },
+      async (config) => {
+        await options.addMatcher(routeID, config)
         editor.close()
       },
     )
@@ -131,6 +153,12 @@ export const MatchCard: React.StatelessComponent<Props> = ({ matchers }) => {
   }, [sum(matchers)])
   const nowMatchers = displayMatchers.map(i => i.matcher)
   const hasNewOrder = sum(matchers) !== sum(nowMatchers)
+  const saveOrder = async () => {
+    await options.updateMatch(routeID, nowMatchers)
+  }
+  const delMatch = async () => {
+    await options.delMatch(routeID)
+  }
 
   return (
     <Table cellSpacing={0} size='small'>
@@ -140,11 +168,11 @@ export const MatchCard: React.StatelessComponent<Props> = ({ matchers }) => {
             Matcher
           </TableCell>
           <TableCell padding='none' align='right'>
-            {hasNewOrder && <Button size='small' color='primary' variant='contained'>保存排序</Button>}
+            {hasNewOrder && <Button onClick={saveOrder} size='small' color='primary' variant='contained'>保存排序</Button>}
           </TableCell>
           <TableCell style={{ width: 44 }} padding='none'>
             <MoreOptions>
-              <MenuItem>
+              <MenuItem onClick={openAddEditor}>
                 <ListItemIcon><AddIcon /></ListItemIcon>
                 <ListItemText primary='添加'></ListItemText>
               </MenuItem>
@@ -152,7 +180,7 @@ export const MatchCard: React.StatelessComponent<Props> = ({ matchers }) => {
                 <ListItemIcon><EditIcon /></ListItemIcon>
                 <ListItemText primary='编辑'></ListItemText>
               </MenuItem>
-              <MenuItem>
+              <MenuItem onClick={delMatch}>
                 <ListItemIcon><DeleteIcon /></ListItemIcon>
                 <ListItemText primary='删除'></ListItemText>
               </MenuItem>
@@ -167,6 +195,7 @@ export const MatchCard: React.StatelessComponent<Props> = ({ matchers }) => {
               ItemType,
               item,
               id,
+              routeID,
               displayMatchers,
               setDisplayMatchers,
             }} />

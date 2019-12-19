@@ -62,19 +62,31 @@ export const useUpdateServerOptions = () => {
         Action.DELETE, '/routes/' + id
       )
     },
-    updateMatch: async (match: Matcher[], id: number) => {
+    updateMatch: async (id: number, match: Matcher[]) => {
       return update(
         (server, match) => (server.routes[id].match = match, server),
-        Action.POST, `/routes/${id}/match`, match
+        Action.PATCH, `/routes/${id}/match`, match
       )
     },
-    addMatch: async (match: Matcher, id: number) => {
+    delMatch: async (id: number) => {
+      return update<Matcher, Route>(
+        (server, route) => (server.routes[id] = route, server),
+        Action.DELETE, `/routes/${id}/match/`
+      )
+    },
+    addMatcher: async (id: number, match: Matcher) => {
       return update<Matcher, Matcher[]>(
         (server, match) => (server.routes[id].match = match, server),
         Action.POST, `/routes/${id}/match/`, match
       )
     },
-    delMatch: async (match_id: number, id: number) => {
+    updateMatcher: async (id: number, match_id:number, matcher: Matcher) => {
+      return update<Matcher>(
+        (server, matcher) => (server.routes[id].match[match_id] = matcher, server),
+        Action.PATCH, `/routes/${id}/match/${match_id}`, matcher
+      )
+    },
+    delMatcher: async (id: number, match_id: number) => {
       return update<Matcher, Matcher[]>(
         (server, match) => (server.routes[id].match = match, server),
         Action.DELETE, `/routes/${id}/match/${match_id}`

@@ -97,9 +97,10 @@ const HandlerDragRow: React.StatelessComponent<{ item: DragItem, ItemType: symbo
 
 export interface Props {
   handlers: Handler[]
+  routeID: number
 }
 
-export const HandleCard: React.StatelessComponent<Props> = ({ handlers }) => {
+export const HandleCard: React.StatelessComponent<Props> = ({ handlers, routeID }) => {
   const classes = useStyles(useTheme())
 
   const editor = useEditor()

@@ -85,11 +85,11 @@ export const RouteCard: React.StatelessComponent<Props> = ({ route, id }) => {
         <Grid container direction='column' spacing={3}>
           {match.length === 0 ? null : (
             <Grid item>
-              <MatchCard matchers={match} />
+              <MatchCard routeID={id} matchers={match} />
             </Grid>
           )}
           <Grid item>
-            <HandleCard handlers={handle} />
+            <HandleCard routeID={id} handlers={handle} />
           </Grid>
         </Grid>
       </CardContent>
