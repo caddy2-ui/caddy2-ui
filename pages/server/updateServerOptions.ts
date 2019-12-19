@@ -1,9 +1,11 @@
 import { Action } from "~libs/browser/api-client";
-import { useUpdateServer } from "./index";
+import { useUpdateServer, getServer } from "./index";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { RouteList, Route, Matcher } from "~libs/caddy/Route";
 import { Handler } from "~libs/caddy/Route/Route";
+import { ConnectionPolicy } from "~libs/caddy/Server/ConnectionPolicy";
+import { useCaddy2Config } from "~libs/browser/caddy2";
 
 export const useUpdateServerOptions = () => {
   const router = useRouter()
@@ -84,7 +86,7 @@ export const useUpdateServerOptions = () => {
     addMatcher: async (id: number, match: Matcher) => {
       return update<Matcher, Matcher[]>(
         (server, match) => (server.routes[id].match = match, server),
-        Action.PUT, `/routes/${id}/match/`, match
+        Action.POST, `/routes/${id}/match/`, match
       )
     },
     updateMatcher: async (id: number, match_id: number, matcher: Matcher) => {
@@ -120,7 +122,7 @@ export const useUpdateServerOptions = () => {
     addHandler: async (id: number, handler: Handler) => {
       return update<Handler, Handler[]>(
         (server, handle) => (server.routes[id].handle = handle, server),
-        Action.PUT, `/routes/${id}/handle/`, handler
+        Action.POST, `/routes/${id}/handle/`, handler
       )
     },
     updateHandler: async (id: number, handle_id: number, handler: Handler) => {
@@ -133,6 +135,30 @@ export const useUpdateServerOptions = () => {
       return update<null, Handler[]>(
         (server, handle) => (server.routes[id].handle = handle, server),
         Action.DELETE, `/routes/${id}/handle/${handle_id}`
+      )
+    },
+    updateConnectionPolicies: async (policies: ConnectionPolicy[]) => {
+      return update(
+        (server, handle) => (server.tls_connection_policies = handle, server),
+        Action.PATCH, `/tls_connection_policies/`, policies
+      )
+    },
+    addConnectionPolicy: async (policy: ConnectionPolicy, create = false) => {
+      return update<any, ConnectionPolicy[]>(
+        (server, policies) => (server.tls_connection_policies = policies, server),
+        Action.POST, `/tls_connection_policies/`, create ? [policy] : policy
+      )
+    },
+    updateConnectionPolicy: async (id: number, policy: ConnectionPolicy) => {
+      return update(
+        (server, policy) => (server.tls_connection_policies[id] = policy, server),
+        Action.PATCH, `/tls_connection_policies/${id}`, policy
+      )
+    },
+    delConnectionPolicy: async (id: number) => {
+      return update<ConnectionPolicy, ConnectionPolicy[]>(
+        (server, policies) => (server.tls_connection_policies = policies, server),
+        Action.DELETE, `/tls_connection_policies/${id}`
       )
     },
   }), [update])

@@ -1,4 +1,4 @@
-import React, { } from "react";
+import React, { Fragment } from "react";
 import { caddy2Config } from "~libs/browser/caddy2";
 import { getServer } from "./index";
 import { useRouter } from "next/router";
@@ -19,6 +19,10 @@ import {
 } from "@material-ui/core";
 import { ConnectionPolicyCard } from "./components/ConnectionPolicyCard";
 import Head from "next/head";
+import { useEditor } from "~pages/editor";
+import { useUpdateServerOptions } from "./updateServerOptions";
+import { Server } from "~libs/caddy/Server";
+import { ConnectionPolicy } from "~libs/caddy/Server/ConnectionPolicy";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -27,7 +31,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default () => {
+export const TLSConnectionPolicyPage = () => {
 
   const classes = useStyles(useTheme())
   const router = useRouter()
@@ -35,17 +39,47 @@ export default () => {
   const [config] = caddy2Config.useContainer()
   const server = getServer(config, name)
 
+  const options = useUpdateServerOptions()
+  const editor = useEditor()
+  const openAddEditor = () => {
+    editor.open(
+      {
+        config: {
+          match: { sni: [] },
+          client_authentication: {
+            trusted_ca_certs: [],
+            trusted_leaf_certs: [],
+          }
+        } as ConnectionPolicy,
+        file: '/config/app/http/server/tls_connection_policy/config.json'
+      },
+      async (config) => {
+        await options.addConnectionPolicy(config, typeof server.tls_connection_policies === 'undefined')
+        editor.close()
+      }
+    )
+  }
+
+  const policies = server.tls_connection_policies || []
+
+  const action = (
+    <Button onClick={openAddEditor} variant='contained' color='primary'>添加</Button>
+  )
+
   return (
-    <ContentLayout>
+    <Fragment>
       <Head>
         <title>TLS 连接配置</title>
       </Head>
       <Card>
-        <CardHeader title={"TLS 连接配置"}></CardHeader>
+        <CardHeader
+          title={"TLS 连接配置"}
+          action={action}
+        />
         <Divider />
         <CardContent>
           <Grid container spacing={3}>
-            {(server.tls_connection_policies || [] as typeof server.tls_connection_policies).map((policy, i) => (
+            {policies.map((policy, i) => (
               <Grid item key={i}
                 lg={6}
                 md={6}
@@ -54,12 +88,22 @@ export default () => {
               >
                 <ConnectionPolicyCard
                   policy={policy}
+                  id={i}
                 />
               </Grid>
             ))}
           </Grid>
         </CardContent>
       </Card>
+    </Fragment>
+  )
+}
+
+export default () => {
+  return (
+    <ContentLayout>
+      <TLSConnectionPolicyPage />
     </ContentLayout>
   )
 }
+
