@@ -72,16 +72,16 @@ export const RouteCard: React.StatelessComponent<Props> = ({ route, id }) => {
   const action = (
     <Fragment>
       <MoreOptions>
+        <MenuItem onClick={() => openEditor()} >
+          <ListItemIcon><EditIcon /></ListItemIcon>
+          <ListItemText primary='编辑设置'></ListItemText>
+        </MenuItem>
         {match.length !== 0 ? null : (
           <MenuItem onClick={() => openAddMatchEditor()} >
             <ListItemIcon><AddIcon /></ListItemIcon>
             <ListItemText primary='添加 Match'></ListItemText>
           </MenuItem>
         )}
-        <MenuItem onClick={() => openEditor()} >
-          <ListItemIcon><EditIcon /></ListItemIcon>
-          <ListItemText primary='编辑设置'></ListItemText>
-        </MenuItem>
         <MenuItem onClick={deleteRoute}>
           <ListItemIcon ><DeleteIcon /></ListItemIcon>
           <ListItemText primary='删除'></ListItemText>
