@@ -161,5 +161,23 @@ export const useUpdateServerOptions = () => {
         Action.DELETE, `/tls_connection_policies/${id}`
       )
     },
+    addClientAuthCert: (type: 'trusted_ca_certs' | 'trusted_leaf_certs') => (id: number, ca: string, create = false) => {
+      return update<any, string[]>(
+        (server, ca_certs) => (server.tls_connection_policies[id].client_authentication[type] = ca_certs, server),
+        Action.POST, `/tls_connection_policies/${id}/client_authentication/${type}`, create ? [ca] : ca
+      )
+    },
+    delClientAuthCert: (type: 'trusted_ca_certs' | 'trusted_leaf_certs') => (id: number, ca_id: number) => {
+      return update<null, string[]>(
+        (server, ca_certs) => (server.tls_connection_policies[id].client_authentication[type] = ca_certs, server),
+        Action.DELETE, `/tls_connection_policies/${id}/client_authentication/${type}/${ca_id}`,
+      )
+    },
+    updateClientAuthCert: (type: 'trusted_ca_certs' | 'trusted_leaf_certs') => (id: number, ca_id: number, cert: string) => {
+      return update(
+        (server, cert) => (server.tls_connection_policies[id].client_authentication[type][ca_id] = cert, server),
+        Action.PATCH, `/tls_connection_policies/${id}/client_authentication/${type}/${ca_id}`, cert
+      )
+    },
   }), [update])
 }
