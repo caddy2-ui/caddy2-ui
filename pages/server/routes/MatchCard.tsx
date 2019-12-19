@@ -172,13 +172,13 @@ export const MatchCard: React.StatelessComponent<Props> = ({ matchers, routeID }
           </TableCell>
           <TableCell style={{ width: 44 }} padding='none'>
             <MoreOptions>
-              <MenuItem onClick={openAddEditor}>
-                <ListItemIcon><AddIcon /></ListItemIcon>
-                <ListItemText primary='添加'></ListItemText>
-              </MenuItem>
               <MenuItem onClick={openEditor}>
                 <ListItemIcon><EditIcon /></ListItemIcon>
                 <ListItemText primary='编辑'></ListItemText>
+              </MenuItem>
+              <MenuItem onClick={openAddEditor}>
+                <ListItemIcon><AddIcon /></ListItemIcon>
+                <ListItemText primary='添加'></ListItemText>
               </MenuItem>
               <MenuItem onClick={delMatch}>
                 <ListItemIcon><DeleteIcon /></ListItemIcon>
