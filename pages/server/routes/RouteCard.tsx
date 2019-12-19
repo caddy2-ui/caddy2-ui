@@ -57,7 +57,7 @@ export const RouteCard: React.StatelessComponent<Props> = ({ route, id }) => {
   const openAddMatchEditor = () => {
     editor.open(
       {
-        config: { match: [] },
+        config: { match: [{ path: [""] }] },
         file: '/config/app/http/server/route/config.json'
       },
       async (config) => {
