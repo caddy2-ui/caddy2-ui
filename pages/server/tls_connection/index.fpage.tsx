@@ -1,2 +1,3 @@
 import dynamic from "next/dynamic";
-export default dynamic(() => import('./index.page'), { ssr: false })
+import { LinearProgress } from "@material-ui/core";
+export default dynamic(() => import('./index.page'), { ssr: false, loading: () => <LinearProgress /> })

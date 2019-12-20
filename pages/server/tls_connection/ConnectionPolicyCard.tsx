@@ -12,9 +12,12 @@ import {
   ListItemSecondaryAction,
   MenuItem,
   Collapse,
+  Tooltip,
+  colors,
 } from "@material-ui/core";
-import React from "react";
+import React, { memo } from "react";
 import EditIcon from "@material-ui/icons/Edit";
+import VisibilityIcon from '@material-ui/icons/Visibility';
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { MoreOptions } from "~pages/components/MoreOptions";
@@ -29,34 +32,69 @@ const useStyles = makeStyles(theme => ({
   nested: {
     paddingLeft: theme.spacing(4),
   },
+  item: {
+    border: '1px solid ' + theme.palette.grey[300],
+    borderRadius: 5,
+    overflow: 'hidden',
+    marginRight: 5,
+  },
+  name: {
+    padding: 5,
+    background: theme.palette.common.black,
+    color: theme.palette.common.white,
+    minWidth: 25,
+    textAlign: 'center',
+  },
+  val: {
+    padding: '5px 8px',
+  },
 }))
 
+import { parseCert, rdnmap, map2DisplayRow, SubjectRow } from "./CerInfo";
 interface CeritemProps {
   cert: string,
   delAuthCert: () => Promise<any> | any
   updateAuthCert: (content: string) => Promise<any> | any
 }
-const Ceritem: React.StatelessComponent<CeritemProps> = ({
+
+const Ceritem: React.StatelessComponent<CeritemProps> = memo(({
   cert,
   delAuthCert,
   updateAuthCert,
 }) => {
   const certEditor = useCertEditor()
   const classes = useStyles(useTheme())
-  const openCertEditor = () => {
-    certEditor.open(cert, async (cert) => {
+  const openCertEditor = (tab = 0) => {
+    certEditor.open({ cert, tabValue: tab }, async (cert) => {
       await updateAuthCert(cert)
       certEditor.close()
     })
   }
+  const certificate = parseCert(cert)
+  const subjRows = (certificate.subject.typesAndValues as SubjectRow[]).map(map2DisplayRow)
   return (
     <ListItem key={cert.slice(-10)} className={classes.nested}>
-      <ListItemText primary={cert.slice(0, 50)}></ListItemText>
+      <ListItemText>
+        <Grid container>
+          {subjRows.map(({ typeval, subjval, }) => (
+            <Grid item key={typeval} className={classes.item}>
+              <Grid container justify='center'>
+                <Grid item className={classes.name}>{typeval}</Grid>
+                <Grid item className={classes.val}>{subjval}</Grid>
+              </Grid>
+            </Grid>
+          ))}
+        </Grid>
+      </ListItemText>
       <ListItemSecondaryAction>
         <MoreOptions>
-          <MenuItem onClick={openCertEditor}>
+          <MenuItem onClick={() => openCertEditor()}>
             <ListItemIcon><EditIcon /></ListItemIcon>
             <ListItemText>编辑</ListItemText>
+          </MenuItem>
+          <MenuItem onClick={() => openCertEditor(1)}>
+            <ListItemIcon><VisibilityIcon /></ListItemIcon>
+            <ListItemText>查看</ListItemText>
           </MenuItem>
           <MenuItem onClick={delAuthCert}>
             <ListItemIcon><DeleteIcon /></ListItemIcon>
@@ -66,7 +104,7 @@ const Ceritem: React.StatelessComponent<CeritemProps> = ({
       </ListItemSecondaryAction>
     </ListItem>
   )
-}
+})
 
 export interface Props {
   policy: Server['tls_connection_policies'][0]
@@ -102,7 +140,7 @@ export const ConnectionPolicyCard: React.StatelessComponent<Props> = ({ policy, 
   }
   type CertType = 'trusted_ca_certs' | 'trusted_leaf_certs'
   const openAddCertEditor = (type: CertType) => {
-    certEditor.open('', async (cert) => {
+    certEditor.open({ cert: '' }, async (cert) => {
       await options.addClientAuthCert(type)(id, cert, typeof clientAuth[type] === 'undefined')
       certEditor.close()
     })

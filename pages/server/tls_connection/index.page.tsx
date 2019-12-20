@@ -98,7 +98,8 @@ export const TLSConnectionPolicyPage = () => {
   )
 }
 
-import { AddCertDialog, CertEditorState } from "./AddCertDialog";
+import { AddCertDialog } from "./AddCertDialog";
+import { CertEditorState } from "./AddCertDialogState";
 export default () => {
   return (
     <CertEditorState.Provider>
