@@ -1,8 +1,8 @@
 // copy parse from https://github.com/PeculiarVentures/PKI.js/blob/master/examples/CertificateComplexExample/es6.js
 
 import React, { memo } from "react";
-import Certificate from "pkijs/src/Certificate";
-import RSAPublicKey from "pkijs/src/RSAPublicKey";
+import Certificate from "pkijs/build/Certificate";
+import RSAPublicKey from "pkijs/build/RSAPublicKey";
 import *as asn1js from "asn1js";
 import { bufferToHexCodes } from "pvutils";
 

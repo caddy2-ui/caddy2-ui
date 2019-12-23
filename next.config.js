@@ -8,7 +8,7 @@ const MONACO_DIR = path.join(__dirname, './node_modules/monaco-editor')
 
 module.exports = {
   poweredByHeader: false,
-  pageExtensions: ["fpage.tsx", "api.ts"],
+  pageExtensions: ["page.tsx", "api.ts"],
   webpack: (config, options) => {
     const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
